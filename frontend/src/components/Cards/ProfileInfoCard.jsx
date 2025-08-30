@@ -18,7 +18,7 @@ const ProfileInfoCard = () => {
               src={user.profileImageUrl} alt="" className="w-11 h-11 bg-gray-300 rounded-full mr-3" />
       <div>
         <div className="text-black text-[15px] font-bold leading-3">{user.name || " "}</div>
-        <button className="text-amber-600 text-sm font-semibold cursor-pointer hover:underline" onClick={handleLogout}>Logout</button>
+        <button className="text-amber-600 text-sm font-bold cursor-pointer hover:underline" onClick={handleLogout}>Logout</button>
       </div>
       </div>
     )
