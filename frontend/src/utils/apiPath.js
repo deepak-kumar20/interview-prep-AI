@@ -1,4 +1,7 @@
-export const BASE_URL = "http://localhost:8000";
+// Get base URL from environment variable
+export const BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://interview-prep-ai-oikk.onrender.com";
 
 export const API_PATHS = {
   AUTH: {
