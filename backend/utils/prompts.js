@@ -22,7 +22,9 @@ Task:
   }
 ]`;
 
-const conceptExplainPrompt = (question) => `You are an AI trained to generate explanations for a given interview question.
+const conceptExplainPrompt = (
+  question
+) => `You are an AI trained to generate explanations for a given interview question.
 
 Task:
 - Explain the following interview question and its concept in depth as if teaching a beginner developer.
@@ -37,4 +39,113 @@ Task:
   "explanation": "Explanation here."
 }`;
 
-module.exports = { questionAnswerPrompt, conceptExplainPrompt };
+const assessmentInterviewPrompt = (
+  role,
+  experience,
+  topicsToFocus,
+  currentQuestionNumber,
+  totalQuestions,
+  previousQuestion = null,
+  previousAnswer = null
+) => {
+  let contextText = "";
+  if (previousQuestion && previousAnswer) {
+    contextText = `
+
+Previous Context:
+- Previous Question: "${previousQuestion}"
+- Student's Answer: "${previousAnswer}"
+
+Based on the student's previous answer, you can either:
+1. Ask a follow-up question to dive deeper into the same topic
+2. Ask a new question on a different topic from the focus areas
+
+Set "isFollowUp": true if this is a follow-up question, false otherwise.`;
+  }
+
+  return `You are an AI interviewer conducting a live technical interview for a ${role} position.
+
+Interview Details:
+- Role: ${role}
+- Experience Level: ${experience}
+- Focus Topics: ${topicsToFocus}
+- Current Question: ${currentQuestionNumber} of ${totalQuestions}${contextText}
+
+Task:
+Generate ONE interview question that:
+- Is appropriate for ${experience} level
+- Tests knowledge in: ${topicsToFocus}
+- Is clear and specific
+- Can be answered in 1-2 minutes${
+    previousAnswer ? "\n- Takes into account the student's previous answer" : ""
+  }
+
+Return ONLY a valid JSON object. Do not include any text outside JSON.
+
+{
+  "question": "Your interview question here?",
+  "expectedAnswer": "Brief expected answer for evaluation purposes",
+  "isFollowUp": ${previousAnswer ? "true or false" : "false"}
+}`;
+};
+
+const assessmentEvaluationPrompt = (role, experience, questionsData) => {
+  const questionsText = questionsData
+    .map(
+      (q, i) => `
+Question ${i + 1}: ${q.question}
+Student's Answer: ${q.studentAnswer || "No answer provided"}
+Expected Answer: ${q.expectedAnswer}
+Time Spent: ${q.timeSpent} seconds
+`
+    )
+    .join("\n---\n");
+
+  return `You are an AI evaluator assessing a technical interview for a ${role} position at ${experience} level.
+
+Interview Data:
+${questionsText}
+
+Task:
+Evaluate the student's performance across all questions and provide:
+
+1. Individual Question Scores (0-10 for each)
+2. Overall Scores:
+   - Technical Score (0-100): Accuracy and depth of technical knowledge
+   - Communication Score (0-100): Clarity and structure of answers
+   - Problem Solving Score (0-100): Analytical thinking and approach
+   - Overall Score (0-100): Weighted average of above scores
+
+3. Analysis:
+   - List 3-5 key strengths demonstrated
+   - List 3-5 areas for improvement
+   - Provide 3-5 specific recommendations for growth
+
+4. Summary: 2-3 paragraph overall evaluation
+
+Return ONLY a valid JSON object. Do not include any text outside JSON.
+
+{
+  "questions": [
+    {
+      "score": 8,
+      "feedback": "Brief feedback for question 1"
+    }
+  ],
+  "overallScore": 75,
+  "technicalScore": 80,
+  "communicationScore": 70,
+  "problemSolvingScore": 75,
+  "strengths": ["strength 1", "strength 2", "strength 3"],
+  "weaknesses": ["weakness 1", "weakness 2"],
+  "recommendations": ["recommendation 1", "recommendation 2", "recommendation 3"],
+  "summary": "Overall evaluation summary here"
+}`;
+};
+
+module.exports = {
+  questionAnswerPrompt,
+  conceptExplainPrompt,
+  assessmentInterviewPrompt,
+  assessmentEvaluationPrompt,
+};

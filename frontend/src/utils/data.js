@@ -14,33 +14,44 @@ export const CARD_BG = [
 export const APP_FEATURES = [
   {
     id: "01",
-    title: "Tailored Just for You",
+    title: "Practice Mode",
     description:
-      "Receive personalized interview questions and model answers based on your role and experience, ensuring targeted preparation for your specific challenges.",
+      "Get personalized interview questions tailored to your role and experience. Practice at your own pace with unlimited time and save sessions for later review.",
   },
   {
     id: "02",
-    title: "Learn at Your Own Pace",
+    title: "AI-Powered Explanations",
     description:
-      "Access detailed explanations whenever you're ready, allowing you to control your learning journey and dive deeper into topics at your own speed.",
+      "Access detailed AI-generated explanations for any concept. Understand the 'why' behind answers and dive deeper into topics when you need clarity.",
   },
   {
     id: "03",
-    title: "Capture Your Insights",
+    title: "Smart Organization",
     description:
-      "Add personal notes and pin important questions to stay organized, track progress, and revisit key concepts tailored to your learning needs.",
+      "Pin important questions, add personal notes, and organize your learning journey. Keep track of what matters most to you.",
   },
   {
     id: "04",
-    title: "Understand the “Why” Behind Answers",
+    title: "Timed Assessments",
     description:
-      "Unlock AI-generated explanations for answers, helping you grasp the reasoning and context, which enhances understanding and retention.",
+      "Take real-time AI interview assessments with time limits. Experience actual interview pressure and get comprehensive performance evaluations.",
   },
-  // New feature suggestion below
   {
     id: "05",
-    title: "Instant Performance Feedback",
+    title: "Instant AI Feedback",
     description:
-      "Receive AI-driven feedback on answer clarity, structure, and delivery—boosting confidence through actionable insights after every practice.",
+      "Receive detailed AI analysis on your technical skills, communication, and problem-solving abilities with actionable improvement suggestions.",
+  },
+  {
+    id: "06",
+    title: "Teacher Dashboard",
+    description:
+      "Teachers and recruiters can review student assessments, add feedback, track analytics, and monitor progress across multiple candidates.",
+  },
+  {
+    id: "07",
+    title: "Performance Analytics",
+    description:
+      "View detailed score breakdowns, identify strengths and weaknesses, and track improvement over time with comprehensive analytics.",
   },
 ];

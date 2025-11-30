@@ -10,3 +10,38 @@ Currently, two official plugins are available:
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+
+User Signs Up → Selects Role:
+├── Student (can use both Practice & Assessment modes)
+├── Teacher/Recruiter (can view student assessments + use practice mode)
+└── Admin (full access)
+
+┌─────────────────────────────────────────┐
+│         Student Dashboard                │
+├─────────────────────────────────────────┤
+│  [Practice Mode]    [Assessment Mode]   │
+│                                          │
+│  Practice Mode:                          │
+│  • My Practice Sessions (current system)│
+│  • Create New Session                   │
+│  • Review Questions                     │
+│                                          │
+│  Assessment Mode:                        │
+│  • Take New Interview Test              │
+│  • My Interview Results                 │
+│  • Upcoming Scheduled Tests (optional)  │
+└─────────────────────────────────────────┘
+
+┌─────────────────────────────────────────┐
+│      Teacher/Recruiter Dashboard         │
+├─────────────────────────────────────────┤
+│  • View All Student Assessments         │
+│  • Filter by Date/Role/Score            │
+│  • Student Performance Analytics        │
+│  • Export Reports                       │
+│                                          │
+│  Optional:                               │
+│  • Create Custom Assessment             │
+│  • Practice Mode (for self-use)         │
+└─────────────────────────────────────────┘

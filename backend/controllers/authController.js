@@ -12,12 +12,17 @@ const generateToken = (userId) => {
 //@access Public
 const registerUser = async (req, res) => {
   try {
-    const { email, password, name, profileImageUrl } = req.body;
+    const { email, password, name, profileImageUrl, role } = req.body;
 
     //check if user already exist
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ message: "User already Exists" });
+    }
+
+    // Validate role if provided
+    if (role && !["student", "teacher", "admin"].includes(role)) {
+      return res.status(400).json({ message: "Invalid role provided" });
     }
 
     //Hash Password
@@ -30,6 +35,7 @@ const registerUser = async (req, res) => {
       email,
       password: hashedPassword,
       profileImageUrl,
+      role: role || "student", // default to student if not provided
     });
 
     //Return user data with JWT
@@ -38,6 +44,7 @@ const registerUser = async (req, res) => {
       name: user.name,
       email: user.email,
       profileImageUrl: user.profileImageUrl,
+      role: user.role,
       token: generateToken(user._id),
     });
   } catch (error) {
@@ -50,7 +57,7 @@ const registerUser = async (req, res) => {
 //@desc Login user
 //@route POST /api/auth/login
 //@access Public
-const loginUser = async (req,res) => {
+const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -64,15 +71,16 @@ const loginUser = async (req,res) => {
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-      
-      //Return user data with jwt
-      res.json({
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          profileImageUrl: user.profileImageUrl,
-          token: generateToken(user._id)
-      })
+
+    //Return user data with jwt
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      profileImageUrl: user.profileImageUrl,
+      role: user.role,
+      token: generateToken(user._id),
+    });
   } catch (error) {
     res
       .status(500)
@@ -83,15 +91,15 @@ const loginUser = async (req,res) => {
 //@desc get user Profile
 //@route Get /api/auth/profile
 //@access Public
-const getUserProfile = async (req,res) => {
-    try {
-        const user = await User.findById(req.user.id).select("-password")
-        if (!user) {
-            return res.status(404).json({message:"User not found "})
-        }
+const getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found " });
+    }
 
-        //user found 
-         res.json(user);
+    //user found
+    res.json(user);
   } catch (error) {
     res
       .status(500)

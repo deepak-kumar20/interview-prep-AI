@@ -9,12 +9,12 @@ import { API_PATHS } from "../../utils/apiPath";
 import { UserContext } from "../../context/userContext";
 import uploadImage from "../../utils/uploadImage";
 
-
 const SignUp = ({ setCurrentPage }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [profilePic, setProfilePic] = useState(null);
   const [fullName, setFullName] = useState("");
+  const [role, setRole] = useState("student");
 
   const { updateUser } = useContext(UserContext);
   const [error, setError] = useState(null);
@@ -22,7 +22,7 @@ const SignUp = ({ setCurrentPage }) => {
   const navigate = useNavigate();
 
   //handle signUp
-  const handleSignUp = async(e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
 
     let profileImageUrl = "";
@@ -47,16 +47,17 @@ const SignUp = ({ setCurrentPage }) => {
         profileImageUrl = imgUploadRes.imageUrl || "";
       }
       const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
-        name:fullName,
+        name: fullName,
         email,
         password,
-        profileImageUrl
-      })
+        profileImageUrl,
+        role,
+      });
       const { token } = response.data;
       if (token) {
         localStorage.setItem("token", token);
         updateUser(response.data);
-        navigate("/dashboard")
+        navigate("/dashboard");
       }
     } catch (error) {
       if (error.response && error.response.data) {
@@ -98,6 +99,18 @@ const SignUp = ({ setCurrentPage }) => {
             label="Password"
             type="password"
           />
+
+          <div className="flex flex-col gap-2 mt-2">
+            <label className="text-xs font-medium text-slate-700">I am a</label>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5"
+            >
+              <option value="student">Student</option>
+              <option value="teacher">Teacher/Recruiter</option>
+            </select>
+          </div>
         </div>
 
         {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}

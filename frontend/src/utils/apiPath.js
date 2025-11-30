@@ -31,4 +31,20 @@ export const API_PATHS = {
     PIN: (id) => `/api/questions/${id}/pin`, // Pin or Unpin a question
     UPDATE_NOTE: (id) => `/api/questions/${id}/note`, // Update/Add a note to a question
   },
+
+  ASSESSMENT: {
+    START: "/api/assessments/start", // Start new interview assessment
+    SUBMIT_ANSWER: "/api/assessments/submit-answer", // Submit answer during interview
+    COMPLETE: "/api/assessments/complete", // Complete assessment and get evaluation
+    MY_RESULTS: "/api/assessments/my-results", // Get student's results
+    GET_ONE: (id) => `/api/assessments/${id}`, // Get specific assessment
+  },
+
+  TEACHER: {
+    GET_STUDENTS: "/api/teacher/students", // Get all student assessments
+    GET_ASSESSMENT: (id) => `/api/teacher/assessment/${id}`, // Get assessment details
+    GET_STUDENT: (id) => `/api/teacher/student/${id}`, // Get student's all assessments
+    ADD_REVIEW: "/api/teacher/review", // Add teacher review
+    GET_ANALYTICS: "/api/teacher/analytics", // Get analytics data
+  },
 };

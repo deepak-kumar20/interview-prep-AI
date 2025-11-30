@@ -1,20 +1,87 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../../context/userContext";
 import ProfileInfoCard from "../Cards/ProfileInfoCard";
+import {
+  LuHouse,
+  LuClipboardList,
+  LuUsers,
+  LuChartBar,
+  LuBookOpen,
+} from "react-icons/lu";
+
 const Navbar = () => {
+  const { user } = useContext(UserContext);
+  const location = useLocation();
+
+  const isActive = (path) => location.pathname === path;
+
+  // Navigation items based on user role
+  const studentNavItems = [
+    { path: "/", label: "Home", icon: LuHouse },
+    { path: "/dashboard", label: "Dashboard", icon: LuHouse },
+    { path: "/practice", label: "Practice", icon: LuBookOpen },
+    { path: "/assessment", label: "Assessments", icon: LuClipboardList },
+  ];
+
+  const teacherNavItems = [
+    { path: "/", label: "Home", icon: LuHouse },
+    { path: "/dashboard", label: "Dashboard", icon: LuHouse },
+    { path: "/students", label: "Students", icon: LuUsers },
+    { path: "/analytics", label: "Analytics", icon: LuChartBar },
+  ];
+
+  const navItems = user?.role === "teacher" ? teacherNavItems : studentNavItems;
+
   return (
-    <div className="h-16 bg-white border bored-b border-gray-200/50 backdrop-blur-[2px] py-2.5 px-4 md:px-0 sticky top-0 z-30 ">
-      <div className="container mx-auto flex items-center justify-between gap-5 px-8">
+    <nav className="h-16 bg-white/70 backdrop-blur-md border-b border-gray-200/50 shadow-sm sticky top-0 z-50">
+      <div className="container mx-auto h-full flex items-center justify-between gap-5 px-6 md:px-8">
         {/* Left side → Logo / Title */}
-        <Link to="/dashboard">
-          <h2 className="text-lg md:text-xl font-medium text-black leading-5">
-            Interview Prep AI
+        <Link to="/dashboard" className="flex items-center gap-2 group">
+          <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <span className="text-white font-bold text-sm">P</span>
+          </div>
+          <h2 className="text-lg md:text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            PrepView
           </h2>
         </Link>
 
-        {/* Right side → Profile Info */}
-        <ProfileInfoCard />
+        {/* Center → Navigation Links (only show if user exists) */}
+        {user && (
+          <div className="hidden md:flex items-center gap-1">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
+                    isActive(item.path)
+                      ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md"
+                      : "text-gray-700 hover:bg-gray-100/80"
+                  }`}
+                >
+                  <Icon className="text-lg" />
+                  <span className="font-medium text-sm">{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Right side → Profile Info or Role Badge */}
+        <div className="flex items-center gap-3">
+          {user && user.role && (
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-indigo-100 to-purple-100 border border-indigo-200 rounded-full">
+              <span className="text-xs font-semibold text-indigo-700 uppercase">
+                {user.role}
+              </span>
+            </div>
+          )}
+          <ProfileInfoCard />
+        </div>
       </div>
-    </div>
+    </nav>
   );
 };
 
