@@ -5,6 +5,11 @@ const {
   getStudentAllAssessments,
   addTeacherReview,
   getAnalytics,
+  createCustomAssessment,
+  getCustomAssessments,
+  updateCustomAssessment,
+  deleteCustomAssessment,
+  getAssessmentResults,
 } = require("../controllers/teacherController");
 const { protect } = require("../middlewares/authMiddleware");
 const { isTeacherOrAdmin } = require("../middlewares/roleMiddleware");
@@ -22,5 +27,37 @@ router.get(
 );
 router.post("/review", protect, isTeacherOrAdmin, addTeacherReview);
 router.get("/analytics", protect, isTeacherOrAdmin, getAnalytics);
+
+// Custom Assessment routes
+router.post(
+  "/assessment/create",
+  protect,
+  isTeacherOrAdmin,
+  createCustomAssessment
+);
+router.get(
+  "/assessments/custom",
+  protect,
+  isTeacherOrAdmin,
+  getCustomAssessments
+);
+router.put(
+  "/assessment/:id",
+  protect,
+  isTeacherOrAdmin,
+  updateCustomAssessment
+);
+router.delete(
+  "/assessment/:id",
+  protect,
+  isTeacherOrAdmin,
+  deleteCustomAssessment
+);
+router.get(
+  "/assessment/:id/results",
+  protect,
+  isTeacherOrAdmin,
+  getAssessmentResults
+);
 
 module.exports = router;

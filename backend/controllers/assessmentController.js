@@ -370,10 +370,202 @@ const getAssessmentById = async (req, res) => {
   }
 };
 
+// @desc    Get assigned assessments for student
+// @route   GET /api/assessments/assigned
+// @access  Private (Student)
+const getAssignedAssessments = async (req, res) => {
+  try {
+    // Get template assessments assigned to this student
+    const assessments = await InterviewAssessment.find({
+      assignedStudents: req.user.id,
+      isCustom: true,
+      isTemplate: true, // Only show templates, not instances
+    })
+      .populate("createdBy", "name email")
+      .sort({ scheduledAt: 1 });
+
+    // For each template, check if student has already started/completed it
+    const assessmentsWithStatus = await Promise.all(
+      assessments.map(async (assessment) => {
+        const studentInstance = await InterviewAssessment.findOne({
+          student: req.user.id,
+          templateId: assessment._id,
+        });
+
+        return {
+          ...assessment.toObject(),
+          status: studentInstance ? studentInstance.status : assessment.status,
+          studentAssessmentId: studentInstance?._id,
+        };
+      })
+    );
+
+    res.json({
+      success: true,
+      assessments: assessmentsWithStatus,
+    });
+  } catch (error) {
+    console.error("Error fetching assigned assessments:", error);
+    res.status(500).json({
+      message: "Failed to fetch assigned assessments",
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Start a custom assessment
+// @route   POST /api/assessments/start-custom
+// @access  Private (Student)
+const startCustomAssessment = async (req, res) => {
+  try {
+    const { assessmentId, accessCode } = req.body;
+
+    let templateAssessment;
+
+    // Find template assessment by ID or access code
+    if (assessmentId) {
+      templateAssessment = await InterviewAssessment.findById(assessmentId);
+    } else if (accessCode) {
+      templateAssessment = await InterviewAssessment.findOne({
+        accessCode: accessCode.toUpperCase(),
+        isTemplate: true,
+      });
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Please provide assessment ID or access code" });
+    }
+
+    if (!templateAssessment) {
+      return res.status(404).json({ message: "Assessment not found" });
+    }
+
+    // Check access permissions
+    if (templateAssessment.accessType === "assigned") {
+      // Only assigned students can access
+      const isAssigned = templateAssessment.assignedStudents.some(
+        (studentId) => studentId.toString() === req.user.id.toString()
+      );
+      if (!isAssigned) {
+        return res
+          .status(403)
+          .json({ message: "You are not assigned to this assessment" });
+      }
+    }
+    // For "open" access type, any student with the code can access
+
+    // Check if student already has an in-progress or completed assessment for this template
+    const existingAssessment = await InterviewAssessment.findOne({
+      student: req.user.id,
+      templateId: templateAssessment._id,
+      status: { $in: ["in-progress", "completed"] },
+    });
+
+    if (existingAssessment) {
+      if (existingAssessment.status === "completed") {
+        return res
+          .status(400)
+          .json({ message: "You have already completed this assessment" });
+      } else {
+        // Return existing in-progress assessment
+        const question = await AssessmentQuestion.findOne({
+          assessment: existingAssessment._id,
+        }).sort({ order: -1 });
+
+        return res.json({
+          success: true,
+          message: "Resuming assessment",
+          assessment: existingAssessment,
+          currentQuestion: question,
+          totalQuestions: templateAssessment.questionCount || 8,
+        });
+      }
+    }
+
+    // Create new assessment instance for this student
+    const newAssessment = await InterviewAssessment.create({
+      student: req.user.id,
+      templateId: templateAssessment._id,
+      role: templateAssessment.role,
+      experience: templateAssessment.experience,
+      topicsToFocus: templateAssessment.topicsToFocus,
+      duration: templateAssessment.duration,
+      questionCount: templateAssessment.questionCount || 8,
+      status: "in-progress",
+      startedAt: new Date(),
+      isTemplate: false,
+    });
+
+    // Generate first question using AI
+    const prompt = assessmentInterviewPrompt(
+      newAssessment.role,
+      newAssessment.experience,
+      newAssessment.topicsToFocus,
+      1,
+      newAssessment.questionCount
+    );
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash-lite",
+      contents: prompt,
+    });
+
+    let rawText =
+      response.text ??
+      response.candidates?.[0]?.content?.parts?.[0]?.text ??
+      "";
+
+    const cleanedText = rawText
+      .replace(/```json/gi, "")
+      .replace(/```/g, "")
+      .trim();
+
+    const data = JSON.parse(cleanedText);
+
+    // Create first question
+    const question = await AssessmentQuestion.create({
+      assessment: newAssessment._id,
+      questionText: data.question,
+      expectedAnswer: data.expectedAnswer || "",
+      order: 1,
+    });
+
+    newAssessment.questions.push(question._id);
+    await newAssessment.save();
+
+    res.status(201).json({
+      success: true,
+      message: "Assessment started successfully",
+      assessment: {
+        _id: newAssessment._id,
+        role: newAssessment.role,
+        experience: newAssessment.experience,
+        topicsToFocus: newAssessment.topicsToFocus,
+        status: newAssessment.status,
+        startedAt: newAssessment.startedAt,
+      },
+      currentQuestion: {
+        _id: question._id,
+        questionText: question.questionText,
+        order: question.order,
+      },
+      totalQuestions: newAssessment.questionCount,
+    });
+  } catch (error) {
+    console.error("Error starting custom assessment:", error);
+    res.status(500).json({
+      message: "Failed to start assessment",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   startAssessment,
   submitAnswer,
   completeAssessment,
   getMyResults,
   getAssessmentById,
+  getAssignedAssessments,
+  startCustomAssessment,
 };

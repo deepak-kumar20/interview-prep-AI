@@ -4,7 +4,12 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
 import moment from "moment";
-import { LuUsers, LuTrendingUp, LuClipboardCheck } from "react-icons/lu";
+import {
+  LuUsers,
+  LuTrendingUp,
+  LuClipboardCheck,
+  LuPlus,
+} from "react-icons/lu";
 
 const TeacherDashboard = () => {
   const navigate = useNavigate();
@@ -65,6 +70,26 @@ const TeacherDashboard = () => {
           <p className="text-gray-600 mt-2">
             Monitor student assessments and performance
           </p>
+        </div>
+
+        {/* Quick Action Card */}
+        <div
+          onClick={() => navigate("/create-assessment")}
+          className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-xl shadow-lg p-6 mb-8 cursor-pointer hover:shadow-xl transition-all duration-300 group"
+        >
+          <div className="flex items-center justify-between text-white">
+            <div>
+              <h2 className="text-2xl font-bold mb-2">
+                Create Custom Assessment
+              </h2>
+              <p className="text-white/90">
+                Design personalized assessments for your students
+              </p>
+            </div>
+            <div className="bg-white/20 p-4 rounded-full group-hover:scale-110 transition-transform duration-300">
+              <LuPlus className="text-4xl" />
+            </div>
+          </div>
         </div>
 
         {/* Analytics Cards */}
@@ -212,14 +237,22 @@ const TeacherDashboard = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            assessment.evaluation?.status === "reviewed"
+                            assessment.evaluation?.status === "approved"
                               ? "bg-green-100 text-green-800"
+                              : assessment.evaluation?.status === "reviewed"
+                              ? "bg-blue-100 text-blue-800"
+                              : assessment.evaluation?.status === "rejected"
+                              ? "bg-red-100 text-red-800"
                               : "bg-yellow-100 text-yellow-800"
                           }`}
                         >
-                          {assessment.evaluation?.status === "reviewed"
+                          {assessment.evaluation?.status === "approved"
+                            ? "Approved"
+                            : assessment.evaluation?.status === "reviewed"
                             ? "Reviewed"
-                            : "Pending"}
+                            : assessment.evaluation?.status === "rejected"
+                            ? "Rejected"
+                            : "Pending Review"}
                         </span>
                       </td>
                     </tr>

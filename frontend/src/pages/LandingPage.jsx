@@ -35,7 +35,7 @@ const LandingPage = () => {
     // Fetch platform statistics
     const fetchStats = async () => {
       try {
-        const response = await axiosInstance.get("/stats/platform");
+        const response = await axiosInstance.get("/api/stats/platform");
         if (response.data.success) {
           setStats(response.data.stats);
         }
@@ -102,7 +102,7 @@ const LandingPage = () => {
                 <span className="text-white font-bold text-lg">P</span>
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                PrepView
+                PrepView Ai
               </span>
             </motion.div>
             {user ? (
@@ -140,7 +140,7 @@ const LandingPage = () => {
             >
               Master Your Interviews with{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 animate-text-shine">
-                PrepView
+                PrepView Ai
               </span>
             </motion.h1>
 

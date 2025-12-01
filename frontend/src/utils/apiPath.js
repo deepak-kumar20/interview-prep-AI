@@ -8,6 +8,7 @@ export const API_PATHS = {
     REGISTER: "/api/auth/register", // Signup
     LOGIN: "/api/auth/login", // Authenticate user & return JWT token
     GET_PROFILE: "/api/auth/profile", // Get logged-in user details
+    UPDATE_PROFILE: "/api/auth/profile", // Update user profile
   },
 
   IMAGE: {
@@ -46,5 +47,9 @@ export const API_PATHS = {
     GET_STUDENT: (id) => `/api/teacher/student/${id}`, // Get student's all assessments
     ADD_REVIEW: "/api/teacher/review", // Add teacher review
     GET_ANALYTICS: "/api/teacher/analytics", // Get analytics data
+    CREATE_ASSESSMENT: "/api/teacher/assessment/create", // Create custom assessment
+    GET_CUSTOM_ASSESSMENTS: "/api/teacher/assessments/custom", // Get custom assessments
+    UPDATE_ASSESSMENT: (id) => `/api/teacher/assessment/${id}`, // Update assessment
+    DELETE_ASSESSMENT: (id) => `/api/teacher/assessment/${id}`, // Delete assessment
   },
 };

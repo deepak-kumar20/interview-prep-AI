@@ -8,11 +8,18 @@ import InterviewPrep from "./pages/InterviewPrep/InterviewPrep";
 import UserProvider from "./context/userContext";
 import StartAssessment from "./pages/Assessment/StartAssessment";
 import AssessmentMode from "./pages/Assessment/AssessmentMode";
+import AssignedAssessments from "./pages/Assessment/AssignedAssessments";
 import LiveInterview from "./pages/Assessment/LiveInterview";
 import AssessmentResult from "./pages/Assessment/AssessmentResult";
 import TeacherDashboard from "./pages/Teacher/TeacherDashboard";
 import StudentDetail from "./pages/Teacher/StudentDetail";
 import AssessmentDetail from "./pages/Teacher/AssessmentDetail";
+import StudentsPage from "./pages/Teacher/StudentsPage";
+import AnalyticsPage from "./pages/Teacher/AnalyticsPage";
+import CreateAssessment from "./pages/Teacher/CreateAssessment";
+import AssessmentsManagement from "./pages/Teacher/AssessmentsManagement";
+import AssessmentResults from "./pages/Teacher/AssessmentResults";
+import Profile from "./pages/Profile/Profile";
 
 const App = () => {
   return (
@@ -25,6 +32,9 @@ const App = () => {
             {/* Main Dashboard - Role-based routing */}
             <Route path="/dashboard" element={<DashboardRouter />} />
 
+            {/* Profile Route */}
+            <Route path="/profile" element={<Profile />} />
+
             {/* Practice Mode Routes (Student) */}
             <Route path="/practice" element={<PracticeMode />} />
             <Route
@@ -34,6 +44,10 @@ const App = () => {
 
             {/* Assessment Mode Routes (Student) */}
             <Route path="/assessment" element={<AssessmentMode />} />
+            <Route
+              path="/assessment/assigned"
+              element={<AssignedAssessments />}
+            />
             <Route path="/assessment/start" element={<StartAssessment />} />
             <Route
               path="/assessment/interview/:assessmentId"
@@ -46,6 +60,17 @@ const App = () => {
 
             {/* Teacher/Recruiter Routes */}
             <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
+            <Route path="/students" element={<StudentsPage />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/create-assessment" element={<CreateAssessment />} />
+            <Route
+              path="/assessments-management"
+              element={<AssessmentsManagement />}
+            />
+            <Route
+              path="/assessment/:assessmentId/results"
+              element={<AssessmentResults />}
+            />
             <Route
               path="/teacher/student/:studentId"
               element={<StudentDetail />}

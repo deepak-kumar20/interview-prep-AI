@@ -121,14 +121,31 @@ const addTeacherReview = async (req, res) => {
       return res.status(404).json({ message: "Assessment not found" });
     }
 
+    if (assessment.status !== "completed") {
+      return res.status(400).json({
+        message: "Cannot review an assessment that is not completed",
+      });
+    }
+
+    if (!assessment.evaluation) {
+      return res.status(404).json({
+        message:
+          "Evaluation not found. The assessment may not have been properly completed.",
+      });
+    }
+
     const evaluation = await Evaluation.findById(assessment.evaluation);
     if (!evaluation) {
-      return res.status(404).json({ message: "Evaluation not found" });
+      return res.status(404).json({
+        message: "Evaluation document not found in database",
+      });
     }
 
     // Update evaluation with teacher feedback
-    if (teacherNotes) evaluation.teacherNotes = teacherNotes;
-    if (teacherRating) evaluation.teacherRating = teacherRating;
+    if (teacherNotes !== undefined) evaluation.teacherNotes = teacherNotes;
+    if (teacherRating !== undefined && teacherRating !== null) {
+      evaluation.teacherRating = parseInt(teacherRating);
+    }
     if (status) evaluation.status = status;
     evaluation.reviewedBy = req.user.id;
     evaluation.reviewedAt = new Date();
@@ -238,10 +255,211 @@ const getAnalytics = async (req, res) => {
   }
 };
 
+// @desc    Create custom assessment
+// @route   POST /api/teacher/assessment/create
+// @access  Private (Teacher/Admin)
+const createCustomAssessment = async (req, res) => {
+  try {
+    const {
+      title,
+      description,
+      role,
+      experience,
+      topicsToFocus,
+      duration,
+      questionCount,
+      scheduledAt,
+      assignedStudents,
+      accessType,
+    } = req.body;
+
+    // Validate required fields
+    if (!title || !role || !experience || !topicsToFocus) {
+      return res
+        .status(400)
+        .json({ message: "Please provide all required fields" });
+    }
+
+    // Generate unique 6-character access code
+    const accessCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+
+    // Create the custom assessment
+    const assessment = await InterviewAssessment.create({
+      title,
+      description,
+      role,
+      experience,
+      topicsToFocus,
+      duration: duration || 1800, // default 30 minutes
+      questionCount: questionCount || 10,
+      scheduledAt: scheduledAt || new Date(),
+      assignedStudents: assignedStudents || [],
+      createdBy: req.user._id,
+      isCustom: true,
+      isTemplate: true, // This is a template that students will create instances from
+      status: "scheduled",
+      accessCode,
+      accessType: accessType || "open", // default to open access
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Custom assessment created successfully",
+      assessment,
+      accessCode, // Return code so teacher can share it
+    });
+  } catch (error) {
+    console.error("Error creating custom assessment:", error);
+    res.status(500).json({
+      message: "Failed to create custom assessment",
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Get all custom assessments created by teacher
+// @route   GET /api/teacher/assessments/custom
+// @access  Private (Teacher/Admin)
+const getCustomAssessments = async (req, res) => {
+  try {
+    const assessments = await InterviewAssessment.find({
+      createdBy: req.user._id,
+      isCustom: true,
+      isTemplate: true, // Only show template assessments, not student instances
+    })
+      .populate("assignedStudents", "name email profileImageUrl")
+      .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      assessments,
+    });
+  } catch (error) {
+    console.error("Error fetching custom assessments:", error);
+    res.status(500).json({
+      message: "Failed to fetch custom assessments",
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Update custom assessment
+// @route   PUT /api/teacher/assessment/:id
+// @access  Private (Teacher/Admin)
+const updateCustomAssessment = async (req, res) => {
+  try {
+    const assessment = await InterviewAssessment.findById(req.params.id);
+
+    if (!assessment) {
+      return res.status(404).json({ message: "Assessment not found" });
+    }
+
+    // Check if teacher owns this assessment
+    if (assessment.createdBy.toString() !== req.user._id.toString()) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to update this assessment" });
+    }
+
+    const updatedAssessment = await InterviewAssessment.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    ).populate("assignedStudents", "name email profileImageUrl");
+
+    res.json({
+      success: true,
+      message: "Assessment updated successfully",
+      assessment: updatedAssessment,
+    });
+  } catch (error) {
+    console.error("Error updating assessment:", error);
+    res.status(500).json({
+      message: "Failed to update assessment",
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Delete custom assessment
+// @route   DELETE /api/teacher/assessment/:id
+// @access  Private (Teacher/Admin)
+const deleteCustomAssessment = async (req, res) => {
+  try {
+    const assessment = await InterviewAssessment.findById(req.params.id);
+
+    if (!assessment) {
+      return res.status(404).json({ message: "Assessment not found" });
+    }
+
+    // Check if teacher owns this assessment
+    if (assessment.createdBy.toString() !== req.user._id.toString()) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to delete this assessment" });
+    }
+
+    await InterviewAssessment.findByIdAndDelete(req.params.id);
+
+    res.json({
+      success: true,
+      message: "Assessment deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting assessment:", error);
+    res.status(500).json({
+      message: "Failed to delete assessment",
+      error: error.message,
+    });
+  }
+};
+
+// @desc    Get student results for a specific custom assessment
+// @route   GET /api/teacher/assessment/:id/results
+// @access  Private (Teacher/Admin)
+const getAssessmentResults = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Get the template assessment
+    const templateAssessment = await InterviewAssessment.findById(id);
+
+    if (!templateAssessment) {
+      return res.status(404).json({ message: "Assessment not found" });
+    }
+
+    // Find all student instances (completed assessments) created from this template
+    const results = await InterviewAssessment.find({
+      templateId: id,
+      status: "completed",
+    })
+      .populate("student", "name email profileImageUrl")
+      .populate("evaluation")
+      .sort({ completedAt: -1 });
+
+    res.json({
+      assessment: templateAssessment,
+      results,
+      totalSubmissions: results.length,
+    });
+  } catch (error) {
+    console.error("Error fetching assessment results:", error);
+    res.status(500).json({
+      message: "Failed to fetch assessment results",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getAllStudentAssessments,
   getAssessmentDetails,
   getStudentAllAssessments,
   addTeacherReview,
   getAnalytics,
+  createCustomAssessment,
+  getCustomAssessments,
+  updateCustomAssessment,
+  deleteCustomAssessment,
+  getAssessmentResults,
 };

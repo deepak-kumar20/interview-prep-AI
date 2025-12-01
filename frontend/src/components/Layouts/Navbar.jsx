@@ -21,12 +21,18 @@ const Navbar = () => {
     { path: "/", label: "Home", icon: LuHouse },
     { path: "/dashboard", label: "Dashboard", icon: LuHouse },
     { path: "/practice", label: "Practice", icon: LuBookOpen },
-    { path: "/assessment", label: "Assessments", icon: LuClipboardList },
+    { path: "/assessment", label: "Assessment", icon: LuClipboardList },
+    { path: "/assessment/assigned", label: "Assigned", icon: LuClipboardList },
   ];
 
   const teacherNavItems = [
     { path: "/", label: "Home", icon: LuHouse },
     { path: "/dashboard", label: "Dashboard", icon: LuHouse },
+    {
+      path: "/assessments-management",
+      label: "Assessments",
+      icon: LuClipboardList,
+    },
     { path: "/students", label: "Students", icon: LuUsers },
     { path: "/analytics", label: "Analytics", icon: LuChartBar },
   ];
@@ -58,7 +64,7 @@ const Navbar = () => {
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
                     isActive(item.path)
                       ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-md"
-                      : "text-gray-700 hover:bg-gray-100/80"
+                      : "text-gray-700 hover:bg-indigo-50 hover:text-indigo-700"
                   }`}
                 >
                   <Icon className="text-lg" />

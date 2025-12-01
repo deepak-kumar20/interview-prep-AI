@@ -90,7 +90,7 @@ const loginUser = async (req, res) => {
 
 //@desc get user Profile
 //@route Get /api/auth/profile
-//@access Public
+//@access Private
 const getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
@@ -107,4 +107,32 @@ const getUserProfile = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, getUserProfile };
+//@desc Update user Profile
+//@route PUT /api/auth/profile
+//@access Private
+const updateUserProfile = async (req, res) => {
+  try {
+    const { name, profileImageUrl } = req.body;
+
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update fields
+    if (name) user.name = name;
+    if (profileImageUrl) user.profileImageUrl = profileImageUrl;
+
+    await user.save();
+
+    // Return updated user without password
+    const updatedUser = await User.findById(req.user.id).select("-password");
+    res.json(updatedUser);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error updating profile", error: error.message });
+  }
+};
+
+module.exports = { registerUser, loginUser, getUserProfile, updateUserProfile };

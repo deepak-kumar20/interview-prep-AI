@@ -24,8 +24,45 @@ const LiveInterview = () => {
 
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
+  const [fetchingData, setFetchingData] = useState(false);
   const [startTime, setStartTime] = useState(Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
+
+  // Fetch assessment data if not passed via location.state
+  useEffect(() => {
+    const fetchAssessmentData = async () => {
+      if (!assessment || !currentQuestion) {
+        setFetchingData(true);
+        try {
+          const response = await axiosInstance.get(
+            API_PATHS.ASSESSMENT.GET_ONE(assessmentId)
+          );
+
+          const assessmentData = response.data;
+          setAssessment(assessmentData);
+
+          // Get the latest unanswered question
+          if (assessmentData.questions && assessmentData.questions.length > 0) {
+            const lastQuestion =
+              assessmentData.questions[assessmentData.questions.length - 1];
+            setCurrentQuestion(lastQuestion);
+            setProgress({
+              current: assessmentData.questions.length,
+              total: assessmentData.questionCount || 8,
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching assessment:", error);
+          toast.error("Failed to load assessment");
+          navigate("/assessment/assigned");
+        } finally {
+          setFetchingData(false);
+        }
+      }
+    };
+
+    fetchAssessmentData();
+  }, [assessmentId, assessment, currentQuestion, navigate]);
 
   // Timer effect
   useEffect(() => {
@@ -98,7 +135,7 @@ const LiveInterview = () => {
     }
   };
 
-  if (!assessment || !currentQuestion) {
+  if (!assessment || !currentQuestion || fetchingData) {
     return (
       <DashboardLayout>
         <div className="flex items-center justify-center h-screen">
