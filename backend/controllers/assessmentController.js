@@ -45,7 +45,7 @@ const startAssessment = async (req, res) => {
     );
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash-lite",
+      model: "gemini-2.5-flash-lite",
       contents: prompt,
     });
 
@@ -156,7 +156,7 @@ const submitAnswer = async (req, res) => {
     );
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash-lite",
+      model: "gemini-2.5-flash-lite",
       contents: prompt,
     });
 
@@ -255,7 +255,7 @@ const completeAssessment = async (req, res) => {
     );
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash-lite",
+      model: "gemini-2.5-flash-lite",
       contents: evaluationPrompt,
     });
 
@@ -506,7 +506,7 @@ const startCustomAssessment = async (req, res) => {
     );
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash-lite",
+      model: "gemini-2.5-flash-lite",
       contents: prompt,
     });
 

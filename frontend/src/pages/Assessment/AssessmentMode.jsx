@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
-import { LuPlay, LuClock, LuTrophy } from "react-icons/lu";
+import { LuPlay, LuClock, LuTrophy, LuClipboardList } from "react-icons/lu";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
 import moment from "moment";
@@ -43,18 +43,23 @@ const AssessmentMode = () => {
   return (
     <DashboardLayout>
       <div className="container mx-auto pt-8 pb-4 px-8">
-        <div className="mb-8 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-800">
-              Assessment Mode
-            </h1>
-            <p className="text-gray-600 mt-2">
-              Take AI-conducted interviews and track your progress
-            </p>
+        <div className="mb-8 flex justify-between items-start">
+          <div className="flex items-center gap-4">
+            <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg flex items-center justify-center">
+              <LuClipboardList className="text-2xl text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">
+                Assessment Mode
+              </h1>
+              <p className="text-gray-600 text-sm md:text-base mt-1">
+                Take AI-conducted interviews and track your progress
+              </p>
+            </div>
           </div>
           <button
             onClick={() => navigate("/assessment/start")}
-            className="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors"
+            className="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors flex-shrink-0"
           >
             <LuPlay className="text-xl" />
             Start New Assessment

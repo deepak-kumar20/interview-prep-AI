@@ -143,9 +143,77 @@ Return ONLY a valid JSON object. Do not include any text outside JSON.
 }`;
 };
 
+const roadmapGeneratorPrompt = (role, experience, topics, duration) => `You are an AI career advisor creating a personalized learning roadmap for interview preparation.
+
+Learning Plan Details:
+- Target Role: ${role}
+- Experience Level: ${experience}
+- Topics/Syllabus: ${topics}
+- Preparation Duration: ${duration} months
+
+Task:
+Create a comprehensive, week-by-week learning roadmap that:
+- Breaks down the ${duration} month(s) into weekly goals
+- Covers all topics: ${topics}
+- Adjusts difficulty based on ${experience} level
+- Includes specific learning resources (concepts, not URLs)
+- Provides practical project ideas
+- Includes milestone assessments
+- Gives time management tips
+
+IMPORTANT FORMATTING RULES:
+- Use ## for major sections (e.g., ## 1. Overview, ## 2. Weekly Breakdown)
+- Use ### for week/phase headers (e.g., ### Week 1: HTML Basics)
+- Use **Bold Text** for subsection titles (e.g., **Goals:**, **Learning Resources:**, **Project Idea:**)
+- Use * for bullet points (e.g., * Learn HTML tags)
+- Use -- for horizontal dividers between major sections
+- Use numbered lists (1., 2., 3.) for sequential steps
+- Keep paragraphs concise and well-spaced
+
+Structure the roadmap exactly like this:
+
+## 1. Overview
+[Introduction paragraph]
+
+--
+
+## 2. Weekly Breakdown
+
+### Week 1: [Topic Name]
+**Goals:**
+* Goal 1
+* Goal 2
+
+**Learning Resources:**
+* Resource/Concept 1
+* Resource/Concept 2
+
+**Project Idea:** [Project description]
+
+### Week 2: [Topic Name]
+...
+
+--
+
+## 3. Key Milestones
+1. Milestone 1
+2. Milestone 2
+
+--
+
+## 4. Final Tips
+* Tip 1
+* Tip 2
+
+Return the roadmap as detailed, well-formatted Markdown-style text.
+Make it professional, actionable, and motivating.
+
+Do NOT return JSON. Return plain text with clear Markdown-style formatting.`;
+
 module.exports = {
   questionAnswerPrompt,
   conceptExplainPrompt,
   assessmentInterviewPrompt,
   assessmentEvaluationPrompt,
+  roadmapGeneratorPrompt,
 };

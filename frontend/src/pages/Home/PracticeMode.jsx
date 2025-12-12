@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { LuPlus } from "react-icons/lu";
+import { LuPlus, LuBookOpen } from "react-icons/lu";
 import { CARD_BG } from "../../utils/data";
 import Modal from "../../components/Modal";
 import toast from "react-hot-toast";
@@ -51,11 +51,16 @@ const PracticeMode = () => {
   return (
     <DashboardLayout>
       <div className="container mx-auto pt-4 pb-4 px-8">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Practice Mode</h1>
-          <p className="text-gray-600 mt-1">
-            Create and review your practice sessions
-          </p>
+        <div className="mb-6 flex items-center gap-4">
+          <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg flex items-center justify-center">
+            <LuBookOpen className="text-2xl text-white" />
+          </div>
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">Practice Mode</h1>
+            <p className="text-gray-600 text-sm md:text-base mt-1">
+              Create and review your practice sessions
+            </p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-7 pt-1 pb-6 px-4 md:px-0">

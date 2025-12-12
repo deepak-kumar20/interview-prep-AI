@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import InterviewPrep from "./pages/InterviewPrep/InterviewPrep";
 import UserProvider from "./context/userContext";
 import StartAssessment from "./pages/Assessment/StartAssessment";
+import RoadmapGenerator from "./pages/Home/RoadmapGenerator";
 import AssessmentMode from "./pages/Assessment/AssessmentMode";
 import AssignedAssessments from "./pages/Assessment/AssignedAssessments";
 import LiveInterview from "./pages/Assessment/LiveInterview";
@@ -41,6 +42,9 @@ const App = () => {
               path="/interview-prep/:sessionId"
               element={<InterviewPrep />}
             />
+
+            {/* Roadmap Generator Route (Student) */}
+            <Route path="/roadmap" element={<RoadmapGenerator />} />
 
             {/* Assessment Mode Routes (Student) */}
             <Route path="/assessment" element={<AssessmentMode />} />

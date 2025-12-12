@@ -13,6 +13,7 @@ const statsRoutes = require("./routes/statsRoutes");
 const {
   generateInterviewQuestions,
   generateConceptExplanation,
+  generateRoadmap,
 } = require("./controllers/aiController");
 
 const { protect } = require("./middlewares/authMiddleware");
@@ -43,6 +44,7 @@ app.use("/api/stats", statsRoutes);
 
 app.use("/api/ai/generate-questions", protect, generateInterviewQuestions);
 app.use("/api/ai/generate-explanation", protect, generateConceptExplanation);
+app.use("/api/ai/generate-roadmap", protect, generateRoadmap);
 
 //Serve upload folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads"), {}));
