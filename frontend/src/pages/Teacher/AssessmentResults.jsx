@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
 import axiosInstance from "../../utils/axiosInstance";
 import toast from "react-hot-toast";
+import { getAvatarUrl } from "../../utils/constants";
 import moment from "moment";
 import {
   LuArrowLeft,
@@ -90,9 +91,9 @@ const AssessmentResults = () => {
         </button>
 
         {/* Assessment Header */}
-        <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-xl shadow-lg p-8 mb-6 text-white">
+        <div className="bg-[#1e3a5f] rounded-xl shadow-lg p-8 mb-6 text-white">
           <h1 className="text-3xl font-bold mb-2">{assessment.title}</h1>
-          <p className="text-indigo-100 mb-4">{assessment.description}</p>
+          <p className="text-white/80 mb-4">{assessment.description}</p>
           <div className="flex flex-wrap gap-4 text-sm">
             <div className="flex items-center gap-2">
               <LuTarget />
@@ -146,8 +147,8 @@ const AssessmentResults = () => {
 
           <div className="bg-white rounded-xl shadow-md p-6">
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-purple-100 rounded-lg">
-                <LuTarget className="text-2xl text-purple-600" />
+              <div className="p-3 bg-[#1e3a5f]/10 rounded-lg">
+                <LuTarget className="text-2xl text-[#1e3a5f]" />
               </div>
               <div>
                 <p className="text-sm text-gray-600">Completion Rate</p>
@@ -205,19 +206,11 @@ const AssessmentResults = () => {
                     <tr key={result._id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          {result.student?.profileImageUrl ? (
-                            <img
-                              className="h-10 w-10 rounded-full"
-                              src={result.student.profileImageUrl}
-                              alt=""
-                            />
-                          ) : (
-                            <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                              <span className="text-indigo-600 font-semibold">
-                                {result.student?.name?.charAt(0).toUpperCase()}
-                              </span>
-                            </div>
-                          )}
+                          <img
+                            className="h-10 w-10 rounded-full bg-[#1e3a5f]"
+                            src={getAvatarUrl(result.student?.profileImageUrl, result.student?.name)}
+                            alt=""
+                          />
                           <div className="ml-4">
                             <div className="text-sm font-medium text-gray-900">
                               {result.student?.name}
@@ -256,7 +249,7 @@ const AssessmentResults = () => {
                           onClick={() =>
                             navigate(`/teacher/assessment/${result._id}`)
                           }
-                          className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-900 font-medium"
+                          className="inline-flex items-center gap-2 text-[#1e3a5f] hover:text-[#152d4a] font-medium"
                         >
                           <LuEye />
                           View Details

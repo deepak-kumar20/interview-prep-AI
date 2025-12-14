@@ -116,7 +116,7 @@ const AssessmentsManagement = () => {
           </div>
           <button
             onClick={() => navigate("/create-assessment")}
-            className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md"
+            className="flex items-center gap-2 bg-[#1e3a5f] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#152d4a] transition-all duration-300 shadow-md"
           >
             <LuPlus className="text-xl" />
             Create Assessment
@@ -135,7 +135,7 @@ const AssessmentsManagement = () => {
             </p>
             <button
               onClick={() => navigate("/create-assessment")}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300"
+              className="inline-flex items-center gap-2 bg-[#1e3a5f] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#152d4a] transition-all duration-300"
             >
               <LuPlus className="text-xl" />
               Create Assessment
@@ -149,7 +149,7 @@ const AssessmentsManagement = () => {
                 className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 overflow-hidden"
               >
                 {/* Card Header */}
-                <div className="h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 relative">
+                <div className="h-32 bg-[#1e3a5f] relative">
                   <div className="absolute top-4 right-4">
                     {getStatusBadge(assessment.status)}
                   </div>
@@ -170,7 +170,7 @@ const AssessmentsManagement = () => {
                   {/* Details */}
                   <div className="space-y-3 mb-4">
                     <div className="flex items-center gap-2 text-sm text-gray-700">
-                      <LuBriefcase className="text-indigo-600" />
+                      <LuBriefcase className="text-[#1e3a5f]" />
                       <span className="font-medium">{assessment.role}</span>
                       <span className="text-gray-400">•</span>
                       <span className="text-gray-600">
@@ -179,14 +179,14 @@ const AssessmentsManagement = () => {
                     </div>
 
                     <div className="flex items-center gap-2 text-sm text-gray-700">
-                      <LuClock className="text-indigo-600" />
+                      <LuClock className="text-[#1e3a5f]" />
                       <span>{assessment.duration / 60} minutes</span>
                       <span className="text-gray-400">•</span>
                       <span>{assessment.questionCount} questions</span>
                     </div>
 
                     <div className="flex items-center gap-2 text-sm text-gray-700">
-                      <LuCalendar className="text-indigo-600" />
+                      <LuCalendar className="text-[#1e3a5f]" />
                       <span>
                         {assessment.scheduledAt
                           ? moment(assessment.scheduledAt).format(
@@ -197,7 +197,7 @@ const AssessmentsManagement = () => {
                     </div>
 
                     <div className="flex items-center gap-2 text-sm text-gray-700">
-                      <LuUsers className="text-indigo-600" />
+                      <LuUsers className="text-[#1e3a5f]" />
                       <span>
                         {assessment.assignedStudents?.length || 0} student(s)
                         assigned
@@ -206,13 +206,13 @@ const AssessmentsManagement = () => {
 
                     {/* Access Code Section */}
                     {assessment.accessCode && (
-                      <div className="p-3 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg border border-indigo-200">
+                      <div className="p-3 bg-[#1e3a5f]/5 rounded-lg border border-[#1e3a5f]/20">
                         <div className="flex items-center justify-between gap-2">
                           <div>
                             <p className="text-xs text-gray-600 font-semibold mb-1">
                               Access Code:
                             </p>
-                            <p className="text-2xl font-bold font-mono tracking-wider text-indigo-600">
+                            <p className="text-2xl font-bold font-mono tracking-wider text-[#1e3a5f]">
                               {assessment.accessCode}
                             </p>
                           </div>
@@ -220,13 +220,13 @@ const AssessmentsManagement = () => {
                             onClick={() =>
                               copyAccessCode(assessment.accessCode)
                             }
-                            className="p-2 rounded-lg bg-white hover:bg-indigo-50 transition-colors border border-indigo-200"
+                            className="p-2 rounded-lg bg-white hover:bg-[#1e3a5f]/10 transition-colors border border-[#1e3a5f]/20"
                             title="Copy access code"
                           >
                             {copiedCode === assessment.accessCode ? (
                               <LuCheck className="w-5 h-5 text-green-600" />
                             ) : (
-                              <LuCopy className="w-5 h-5 text-indigo-600" />
+                              <LuCopy className="w-5 h-5 text-[#1e3a5f]" />
                             )}
                           </button>
                         </div>
@@ -262,7 +262,7 @@ const AssessmentsManagement = () => {
                         onClick={() =>
                           navigate(`/edit-assessment/${assessment._id}`)
                         }
-                        className="flex-1 flex items-center justify-center gap-2 bg-indigo-50 text-indigo-700 px-4 py-2 rounded-lg font-semibold hover:bg-indigo-100 transition-colors"
+                        className="flex-1 flex items-center justify-center gap-2 bg-[#1e3a5f]/10 text-[#1e3a5f] px-4 py-2 rounded-lg font-semibold hover:bg-[#1e3a5f]/20 transition-colors"
                       >
                         <LuPencil />
                         Edit

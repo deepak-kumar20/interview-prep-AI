@@ -3,6 +3,7 @@ import DashboardLayout from "../../components/Layouts/DashboardLayout";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
+import { getAvatarUrl } from "../../utils/constants";
 import moment from "moment";
 import {
   LuUsers,
@@ -75,7 +76,7 @@ const TeacherDashboard = () => {
         {/* Quick Action Card */}
         <div
           onClick={() => navigate("/create-assessment")}
-          className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-xl shadow-lg p-6 mb-8 cursor-pointer hover:shadow-xl transition-all duration-300 group"
+          className="bg-[#1e3a5f] rounded-xl shadow-lg p-6 mb-8 cursor-pointer hover:shadow-xl transition-all duration-300 group"
         >
           <div className="flex items-center justify-between text-white">
             <div>
@@ -125,8 +126,8 @@ const TeacherDashboard = () => {
 
             <div className="bg-white rounded-lg shadow-md p-6">
               <div className="flex items-center gap-4">
-                <div className="bg-orange-100 p-3 rounded-full">
-                  <LuClipboardCheck className="text-2xl text-orange-600" />
+                <div className="bg-[#1e3a5f]/10 p-3 rounded-full">
+                  <LuClipboardCheck className="text-2xl text-[#1e3a5f]" />
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Pending Reviews</p>
@@ -192,17 +193,11 @@ const TeacherDashboard = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-10 w-10">
-                            {assessment.student?.profileImageUrl ? (
-                              <img
-                                className="h-10 w-10 rounded-full"
-                                src={assessment.student.profileImageUrl}
-                                alt=""
-                              />
-                            ) : (
-                              <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-semibold">
-                                {assessment.student?.name?.charAt(0)}
-                              </div>
-                            )}
+                            <img
+                              className="h-10 w-10 rounded-full bg-[#1e3a5f]"
+                              src={getAvatarUrl(assessment.student?.profileImageUrl, assessment.student?.name)}
+                              alt=""
+                            />
                           </div>
                           <div className="ml-4">
                             <div className="text-sm font-medium text-gray-900">

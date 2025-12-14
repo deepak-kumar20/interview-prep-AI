@@ -64,9 +64,9 @@ const AnalyticsPage = () => {
       title: "Total Students",
       value: analytics.totalStudents || 0,
       icon: LuUsers,
-      color: "from-purple-500 to-purple-600",
-      bgColor: "bg-purple-100",
-      iconColor: "text-purple-600",
+      color: "from-[#1e3a5f] to-[#152d4a]",
+      bgColor: "bg-[#1e3a5f]/10",
+      iconColor: "text-[#1e3a5f]",
     },
     {
       title: "Average Score",
@@ -80,9 +80,9 @@ const AnalyticsPage = () => {
       title: "Completion Rate",
       value: `${analytics.completionRate || 0}%`,
       icon: LuTarget,
-      color: "from-indigo-500 to-indigo-600",
-      bgColor: "bg-indigo-100",
-      iconColor: "text-indigo-600",
+      color: "from-[#1e3a5f] to-[#152d4a]",
+      bgColor: "bg-[#1e3a5f]/10",
+      iconColor: "text-[#1e3a5f]",
     },
   ];
 
@@ -126,7 +126,7 @@ const AnalyticsPage = () => {
           {/* Performance Overview */}
           <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="bg-gradient-to-r from-indigo-500 to-purple-500 p-3 rounded-lg">
+              <div className="bg-[#1e3a5f] p-3 rounded-lg">
                 <LuChartBar className="text-2xl text-white" />
               </div>
               <h2 className="text-xl font-bold text-gray-800">
@@ -159,7 +159,7 @@ const AnalyticsPage = () => {
           {/* Top Performers */}
           <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
             <div className="flex items-center gap-3 mb-6">
-              <div className="bg-gradient-to-r from-yellow-500 to-orange-500 p-3 rounded-lg">
+              <div className="bg-[#1e3a5f] p-3 rounded-lg">
                 <LuAward className="text-2xl text-white" />
               </div>
               <h2 className="text-xl font-bold text-gray-800">
@@ -174,7 +174,7 @@ const AnalyticsPage = () => {
                     key={index}
                     className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                   >
-                    <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-bold rounded-full text-sm">
+                    <div className="flex items-center justify-center w-8 h-8 bg-[#1e3a5f] text-white font-bold rounded-full text-sm">
                       {index + 1}
                     </div>
                     <div className="flex-1">

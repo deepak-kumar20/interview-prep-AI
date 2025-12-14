@@ -16,7 +16,7 @@ const startAssessment = async (req, res) => {
   try {
     const { role, experience, topicsToFocus } = req.body;
 
-    if (!role || !experience || !topicsToFocus) {
+    if (!role || !experience) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 

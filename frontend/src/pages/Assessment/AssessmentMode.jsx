@@ -45,11 +45,11 @@ const AssessmentMode = () => {
       <div className="container mx-auto pt-8 pb-4 px-8">
         <div className="mb-8 flex justify-between items-start">
           <div className="flex items-center gap-4">
-            <div className="flex-shrink-0 w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg flex items-center justify-center">
+            <div className="flex-shrink-0 w-14 h-14 bg-[#1e3a5f] rounded-xl shadow-lg flex items-center justify-center">
               <LuClipboardList className="text-2xl text-white" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">
+              <h1 className="text-2xl md:text-3xl font-bold text-[#1e3a5f]">
                 Assessment Mode
               </h1>
               <p className="text-gray-600 text-sm md:text-base mt-1">
@@ -59,7 +59,7 @@ const AssessmentMode = () => {
           </div>
           <button
             onClick={() => navigate("/assessment/start")}
-            className="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors flex-shrink-0"
+            className="flex items-center gap-2 bg-[#1e3a5f] text-white px-6 py-3 rounded-lg hover:bg-[#152d4a] transition-colors flex-shrink-0"
           >
             <LuPlay className="text-xl" />
             Start New Assessment
@@ -87,7 +87,7 @@ const AssessmentMode = () => {
               </p>
               <button
                 onClick={() => navigate("/assessment/start")}
-                className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
+                className="bg-[#1e3a5f] text-white px-6 py-2 rounded-lg hover:bg-[#152d4a]"
               >
                 Start Assessment
               </button>
@@ -100,7 +100,7 @@ const AssessmentMode = () => {
                   onClick={() =>
                     navigate(`/assessment/result/${assessment._id}`)
                   }
-                  className="bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-xl transition-shadow border-2 border-gray-100 hover:border-orange-300"
+                  className="bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-xl transition-shadow border-2 border-gray-100 hover:border-[#1e3a5f]/40"
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div>

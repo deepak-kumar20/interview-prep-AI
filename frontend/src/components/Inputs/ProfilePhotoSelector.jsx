@@ -1,6 +1,8 @@
 import React from "react";
 import { LuUser, LuUpload, LuTrash } from "react-icons/lu";
 import { useState } from "react";
+import { DEFAULT_AVATAR } from "../../utils/constants";
+
 const ProfilePhotoSelector = ({ image, setImage, preview, setPreview }) => {
   const inputRef = React.useRef(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -38,22 +40,32 @@ const ProfilePhotoSelector = ({ image, setImage, preview, setPreview }) => {
         className="hidden"
       />
       {!image ? (
-        <div className="w-20 h-20 flex items-center justify-center bg-amber-50 rounded-full relative cursor-pointer">
-          <LuUser className="text-4xl text-orange-400"/>
-              <button
-                   className="w-8 h-8 flex items-center justify-center bg-linear-to-r from-orange-500/85 to-orange-600 text-white rounded-full absolute -bottom-1 -right-1 cursor-pointer"
-                  type="button" onClick={onChooseFile}>
+        <div className="w-20 h-20 flex items-center justify-center bg-[#1e3a5f]/10 rounded-full relative cursor-pointer overflow-hidden">
+          <img 
+            src={DEFAULT_AVATAR} 
+            alt="Default avatar" 
+            className="w-full h-full object-cover"
+          />
+          <button
+            className="w-8 h-8 flex items-center justify-center bg-[#1e3a5f] text-white rounded-full absolute -bottom-1 -right-1 cursor-pointer hover:bg-[#2d4a6f] transition-colors"
+            type="button" 
+            onClick={onChooseFile}
+          >
             <LuUpload />
           </button>
         </div>
       ) : (
         <div className="relative">
-                  <img
-                      className="w-20 h-20 object-cover rounded-full"
-                      src={preview || previewUrl} alt="Profile photo" />
-                  <button
-                      className="w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded-full absolute -bottom-1 -right-1 cursor-pointer"
-                      type="button" onClick={handleRemoveImage}>
+          <img
+            className="w-20 h-20 object-cover rounded-full"
+            src={preview || previewUrl} 
+            alt="Profile photo" 
+          />
+          <button
+            className="w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded-full absolute -bottom-1 -right-1 cursor-pointer hover:bg-red-600 transition-colors"
+            type="button" 
+            onClick={handleRemoveImage}
+          >
             <LuTrash />
           </button>
         </div>

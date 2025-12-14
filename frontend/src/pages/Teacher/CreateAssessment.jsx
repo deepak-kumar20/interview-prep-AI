@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
+import { getAvatarUrl } from "../../utils/constants";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import {
@@ -75,7 +76,7 @@ const CreateAssessment = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.title || !formData.role || !formData.topicsToFocus) {
+    if (!formData.title || !formData.role) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -101,7 +102,7 @@ const CreateAssessment = () => {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-3">
-            <div className="bg-gradient-to-r from-indigo-500 to-purple-500 p-3 rounded-lg">
+            <div className="bg-[#1e3a5f] p-3 rounded-lg">
               <LuClipboardList className="text-2xl text-white" />
             </div>
             Create Custom Assessment
@@ -116,7 +117,7 @@ const CreateAssessment = () => {
           {/* Basic Information */}
           <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <LuFileText className="text-indigo-600" />
+              <LuFileText className="text-[#1e3a5f]" />
               Basic Information
             </h2>
 
@@ -131,7 +132,7 @@ const CreateAssessment = () => {
                   name="title"
                   value={formData.title}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
                   placeholder="e.g., React Developer Technical Assessment"
                   required
                 />
@@ -147,7 +148,7 @@ const CreateAssessment = () => {
                   value={formData.description}
                   onChange={handleChange}
                   rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent resize-none"
                   placeholder="Describe the assessment objectives and what will be evaluated..."
                 />
               </div>
@@ -157,7 +158,7 @@ const CreateAssessment = () => {
           {/* Assessment Configuration */}
           <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <LuTarget className="text-indigo-600" />
+              <LuTarget className="text-[#1e3a5f]" />
               Assessment Configuration
             </h2>
 
@@ -165,7 +166,7 @@ const CreateAssessment = () => {
               {/* Role */}
               <div>
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                  <LuBriefcase className="text-indigo-600" />
+                  <LuBriefcase className="text-[#1e3a5f]" />
                   Role *
                 </label>
                 <input
@@ -173,7 +174,7 @@ const CreateAssessment = () => {
                   name="role"
                   value={formData.role}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
                   placeholder="e.g., Frontend Developer, Backend Engineer"
                   required
                 />
@@ -182,14 +183,14 @@ const CreateAssessment = () => {
               {/* Experience Level */}
               <div>
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                  <LuUser className="text-indigo-600" />
+                  <LuUser className="text-[#1e3a5f]" />
                   Experience Level *
                 </label>
                 <select
                   name="experience"
                   value={formData.experience}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
                   required
                 >
                   <option value="Junior">Junior (0-2 years)</option>
@@ -201,7 +202,7 @@ const CreateAssessment = () => {
               {/* Duration */}
               <div>
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                  <LuClock className="text-indigo-600" />
+                  <LuClock className="text-[#1e3a5f]" />
                   Duration (minutes)
                 </label>
                 <input
@@ -216,14 +217,14 @@ const CreateAssessment = () => {
                   }
                   min="15"
                   max="180"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
                 />
               </div>
 
               {/* Question Count */}
               <div>
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                  <LuTarget className="text-indigo-600" />
+                  <LuTarget className="text-[#1e3a5f]" />
                   Number of Questions
                 </label>
                 <input
@@ -233,14 +234,14 @@ const CreateAssessment = () => {
                   onChange={handleChange}
                   min="5"
                   max="30"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
                 />
               </div>
 
               {/* Scheduled Date */}
               <div>
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                  <LuCalendar className="text-indigo-600" />
+                  <LuCalendar className="text-[#1e3a5f]" />
                   Scheduled Date & Time
                 </label>
                 <input
@@ -248,7 +249,7 @@ const CreateAssessment = () => {
                   name="scheduledAt"
                   value={formData.scheduledAt}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
                 />
               </div>
             </div>
@@ -256,16 +257,15 @@ const CreateAssessment = () => {
             {/* Topics to Focus */}
             <div className="mt-4">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Topics to Focus On *
+                Topics to Focus On (Optional)
               </label>
               <textarea
                 name="topicsToFocus"
                 value={formData.topicsToFocus}
                 onChange={handleChange}
                 rows={3}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent resize-none"
                 placeholder="e.g., React Hooks, State Management, Component Lifecycle, API Integration"
-                required
               />
             </div>
           </div>
@@ -273,7 +273,7 @@ const CreateAssessment = () => {
           {/* Assign Students */}
           <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <LuUsers className="text-indigo-600" />
+              <LuUsers className="text-[#1e3a5f]" />
               Assign Students (Optional)
             </h2>
 
@@ -290,23 +290,20 @@ const CreateAssessment = () => {
                     onClick={() => handleStudentToggle(student._id)}
                     className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${
                       formData.assignedStudents.includes(student._id)
-                        ? "border-indigo-500 bg-indigo-50"
-                        : "border-gray-200 hover:border-indigo-300 hover:bg-gray-50"
+                        ? "border-[#1e3a5f] bg-[#1e3a5f]/10"
+                        : "border-gray-200 hover:border-[#1e3a5f]/30 hover:bg-gray-50"
                     }`}
                   >
                     <input
                       type="checkbox"
                       checked={formData.assignedStudents.includes(student._id)}
                       onChange={() => {}}
-                      className="w-5 h-5 text-indigo-600 rounded focus:ring-indigo-500"
+                      className="w-5 h-5 text-[#1e3a5f] rounded focus:ring-[#1e3a5f]"
                     />
                     <img
-                      src={
-                        student.profileImageUrl ||
-                        "https://via.placeholder.com/40"
-                      }
+                      src={getAvatarUrl(student.profileImageUrl, student.name)}
                       alt={student.name}
-                      className="w-10 h-10 rounded-full object-cover"
+                      className="w-10 h-10 rounded-full object-cover bg-[#1e3a5f]"
                     />
                     <div className="flex-1">
                       <p className="font-semibold text-gray-800">
@@ -332,7 +329,7 @@ const CreateAssessment = () => {
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+              className="flex-1 bg-[#1e3a5f] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#152d4a] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
             >
               {loading ? "Creating..." : "Create Assessment"}
             </button>

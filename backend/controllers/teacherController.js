@@ -274,7 +274,7 @@ const createCustomAssessment = async (req, res) => {
     } = req.body;
 
     // Validate required fields
-    if (!title || !role || !experience || !topicsToFocus) {
+    if (!title || !role || !experience) {
       return res
         .status(400)
         .json({ message: "Please provide all required fields" });

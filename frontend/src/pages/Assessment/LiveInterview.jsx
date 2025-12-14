@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/Layouts/DashboardLayout";
-import { LuClock, LuSend } from "react-icons/lu";
+import { LuClock, LuSend, LuVolume2, LuVolumeX, LuPause, LuMic, LuMicOff } from "react-icons/lu";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
 import toast from "react-hot-toast";
+import useTextToSpeech from "../../hooks/useTextToSpeech";
+import useSpeechRecognition from "../../hooks/useSpeechRecognition";
+import Avatar3D from "../../components/Avatar/Avatar3D";
 
 const LiveInterview = () => {
   const { assessmentId } = useParams();
@@ -27,6 +30,84 @@ const LiveInterview = () => {
   const [fetchingData, setFetchingData] = useState(false);
   const [startTime, setStartTime] = useState(Date.now());
   const [elapsedTime, setElapsedTime] = useState(0);
+
+  // Text-to-Speech hook
+  const { speak, stop, isSpeaking, isPaused, pause, resume, isSupported } = useTextToSpeech();
+
+  // Speech Recognition hook (voice input)
+  const {
+    isListening,
+    transcript,
+    interimTranscript,
+    isSupported: isSpeechRecognitionSupported,
+    error: speechError,
+    startListening,
+    stopListening,
+    resetTranscript,
+  } = useSpeechRecognition();
+
+  // Sync speech recognition transcript to answer
+  useEffect(() => {
+    if (transcript) {
+      setAnswer(transcript);
+    }
+  }, [transcript]);
+
+  // Handle voice input toggle
+  const handleVoiceInput = () => {
+    if (isListening) {
+      stopListening();
+    } else {
+      // Stop any ongoing speech synthesis before listening
+      stop();
+      resetTranscript();
+      startListening();
+      toast.success("Listening... Speak your answer");
+    }
+  };
+
+  // Show speech recognition errors
+  useEffect(() => {
+    if (speechError) {
+      toast.error(speechError);
+    }
+  }, [speechError]);
+
+  // Auto-read question when it changes (first load or new question)
+  useEffect(() => {
+    if (currentQuestion?.questionText && isSupported && !fetchingData) {
+      // Small delay to ensure component is fully rendered
+      const timer = setTimeout(() => {
+        speak(`Question ${currentQuestion.order}. ${currentQuestion.questionText}`, {
+          rate: 0.9,
+          pitch: 1,
+        });
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [currentQuestion?._id, isSupported, fetchingData]);
+
+  // Handle reading the question aloud
+  const handleReadQuestion = () => {
+    if (!currentQuestion?.questionText) return;
+    
+    if (isSpeaking && !isPaused) {
+      pause();
+    } else if (isPaused) {
+      resume();
+    } else {
+      speak(`Question ${currentQuestion.order}. ${currentQuestion.questionText}`, {
+        rate: 0.9,
+        pitch: 1,
+      });
+    }
+  };
+
+  // Stop speech when question changes or component unmounts
+  useEffect(() => {
+    return () => stop();
+  }, [currentQuestion, stop]);
 
   // Fetch assessment data if not passed via location.state
   useEffect(() => {
@@ -178,7 +259,7 @@ const LiveInterview = () => {
           <div className="mt-4">
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div
-                className="bg-orange-500 h-2 rounded-full transition-all duration-300"
+                className="bg-[#1e3a5f] h-2 rounded-full transition-all duration-300"
                 style={{
                   width: `${(progress.current / progress.total) * 100}%`,
                 }}
@@ -187,38 +268,156 @@ const LiveInterview = () => {
           </div>
         </div>
 
-        {/* Question Card */}
-        <div className="bg-white rounded-lg shadow-md p-8 mb-6">
-          <div className="mb-6">
-            <div className="inline-block bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm font-medium mb-4">
-              Question {currentQuestion.order}
+        {/* AI Interviewer Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          {/* Avatar Section */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <Avatar3D isSpeaking={isSpeaking} />
+              <div className="p-4 text-center border-t">
+                <h3 className="font-semibold text-gray-800">AI Interviewer</h3>
+                <p className="text-sm text-gray-500 mt-1">
+                  {isSpeaking ? (
+                    <span className="flex items-center justify-center gap-2 text-[#1e3a5f]">
+                      <span className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#1e3a5f] opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-[#1e3a5f]"></span>
+                      </span>
+                      Speaking...
+                    </span>
+                  ) : (
+                    "Ready to listen"
+                  )}
+                </p>
+                {/* Voice Controls */}
+                <div className="flex items-center justify-center gap-2 mt-3">
+                  {isSupported && (
+                    <button
+                      onClick={handleReadQuestion}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                        isSpeaking
+                          ? "bg-[#1e3a5f]/10 text-[#1e3a5f] hover:bg-[#1e3a5f]/20"
+                          : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      }`}
+                      title={isSpeaking ? (isPaused ? "Resume reading" : "Pause reading") : "Read question aloud"}
+                    >
+                      {isSpeaking ? (
+                        isPaused ? (
+                          <><LuVolume2 className="text-lg" /> Resume</>
+                        ) : (
+                          <><LuPause className="text-lg" /> Pause</>
+                        )
+                      ) : (
+                        <><LuVolume2 className="text-lg" /> Ask Question</>
+                      )}
+                    </button>
+                  )}
+                  {isSpeaking && (
+                    <button
+                      onClick={stop}
+                      className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-red-100 text-red-600 hover:bg-red-200 transition-all duration-200"
+                      title="Stop reading"
+                    >
+                      <LuVolumeX className="text-lg" />
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
-            <h2 className="text-xl font-semibold text-gray-800 leading-relaxed">
-              {currentQuestion.questionText}
-            </h2>
           </div>
 
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Your Answer
-            </label>
-            <textarea
-              value={answer}
-              onChange={(e) => setAnswer(e.target.value)}
-              placeholder="Type your answer here..."
-              className="w-full h-48 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
-              disabled={loading}
-            />
-          </div>
+          {/* Question Card */}
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-lg shadow-md p-6 h-full">
+              <div className="mb-4">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="inline-block bg-[#1e3a5f]/10 text-[#1e3a5f] px-3 py-1 rounded-full text-sm font-medium">
+                    Question {currentQuestion.order}
+                  </div>
+                </div>
+                <h2 className="text-xl font-semibold text-gray-800 leading-relaxed">
+                  {currentQuestion.questionText}
+                </h2>
+              </div>
 
-          <button
-            onClick={handleSubmitAnswer}
-            disabled={loading || !answer.trim()}
-            className="flex items-center justify-center gap-2 w-full bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <LuSend className="text-xl" />
-            {loading ? "Submitting..." : "Submit Answer"}
-          </button>
+              <div className="mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Your Answer
+                  </label>
+                  {isSpeechRecognitionSupported && (
+                    <button
+                      onClick={handleVoiceInput}
+                      disabled={loading || isSpeaking}
+                      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                        isListening
+                          ? "bg-red-100 text-red-600 hover:bg-red-200 animate-pulse"
+                          : "bg-green-100 text-green-600 hover:bg-green-200"
+                      } disabled:opacity-50 disabled:cursor-not-allowed`}
+                      title={isListening ? "Stop listening" : "Speak your answer"}
+                    >
+                      {isListening ? (
+                        <><LuMicOff className="text-lg" /> Stop Recording</>
+                      ) : (
+                        <><LuMic className="text-lg" /> Speak Answer</>
+                      )}
+                    </button>
+                  )}
+                </div>
+                <div className="relative">
+                  <textarea
+                    value={isListening ? answer + interimTranscript : answer}
+                    onChange={(e) => setAnswer(e.target.value)}
+                    placeholder={isListening ? "Listening... speak now" : "Type your answer here or click 'Speak Answer' to use voice input..."}
+                    className={`w-full h-40 p-4 border rounded-lg focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent resize-none transition-all ${
+                      isListening 
+                        ? "border-green-400 bg-green-50" 
+                        : "border-gray-300"
+                    }`}
+                    disabled={loading || isListening}
+                  />
+                  {isListening && (
+                    <div className="absolute bottom-3 right-3 flex items-center gap-2">
+                      <span className="relative flex h-3 w-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                      </span>
+                      <span className="text-xs text-red-600 font-medium">Recording...</span>
+                    </div>
+                  )}
+                </div>
+                {interimTranscript && isListening && (
+                  <p className="text-xs text-gray-500 mt-1 italic">
+                    Hearing: "{interimTranscript}"
+                  </p>
+                )}
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  onClick={handleSubmitAnswer}
+                  disabled={loading || !answer.trim() || isListening}
+                  className="flex-1 flex items-center justify-center gap-2 bg-[#1e3a5f] text-white px-6 py-3 rounded-lg hover:bg-[#152d4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <LuSend className="text-xl" />
+                  {loading ? "Submitting..." : "Submit Answer"}
+                </button>
+                {answer && (
+                  <button
+                    onClick={() => {
+                      setAnswer("");
+                      resetTranscript();
+                    }}
+                    disabled={loading || isListening}
+                    className="px-4 py-3 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+                    title="Clear answer"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Tips */}

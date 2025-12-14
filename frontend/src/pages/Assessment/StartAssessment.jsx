@@ -25,7 +25,7 @@ const StartAssessment = () => {
   const handleStartAssessment = async (e) => {
     e.preventDefault();
 
-    if (!formData.role || !formData.topicsToFocus) {
+    if (!formData.role) {
       toast.error("Please fill all required fields");
       return;
     }
@@ -93,7 +93,7 @@ const StartAssessment = () => {
               name="experience"
               value={formData.experience}
               onChange={handleChange}
-              className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5"
+              className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#1e3a5f] focus:border-[#1e3a5f] block w-full p-2.5"
               required
             >
               <option value="Junior">Junior (0-2 years)</option>
@@ -104,15 +104,14 @@ const StartAssessment = () => {
 
           <div className="flex flex-col gap-2 mb-6">
             <label className="text-xs font-medium text-slate-700">
-              Topics to Focus <span className="text-red-500">*</span>
+              Topics to Focus (Optional)
             </label>
             <textarea
               name="topicsToFocus"
               value={formData.topicsToFocus}
               onChange={handleChange}
               placeholder="e.g., React, JavaScript, Node.js, System Design"
-              className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5 h-24"
-              required
+              className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#1e3a5f] focus:border-[#1e3a5f] block w-full p-2.5 h-24"
             />
           </div>
 

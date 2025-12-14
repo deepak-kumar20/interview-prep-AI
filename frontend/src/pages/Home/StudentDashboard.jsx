@@ -24,9 +24,9 @@ const StudentDashboard = () => {
           {/* Practice Mode Card */}
           <div
             onClick={() => navigate("/practice")}
-            className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 cursor-pointer hover:shadow-2xl transition-all duration-300 border-2 border-blue-200 hover:border-blue-400 group"
+            className="bg-[#1e3a5f]/5 rounded-2xl p-8 cursor-pointer hover:shadow-2xl transition-all duration-300 border-2 border-[#1e3a5f]/20 hover:border-[#1e3a5f] group"
           >
-            <div className="flex items-center justify-center w-16 h-16 bg-blue-500 rounded-full mb-6 group-hover:scale-110 transition-transform">
+            <div className="flex items-center justify-center w-16 h-16 bg-[#1e3a5f] rounded-full mb-6 group-hover:scale-110 transition-transform">
               <LuBookOpen className="text-3xl text-white" />
             </div>
             <h2 className="text-2xl font-bold text-gray-800 mb-3">
@@ -38,19 +38,19 @@ const StudentDashboard = () => {
             </p>
             <ul className="space-y-2 text-sm text-gray-700">
               <li className="flex items-center gap-2">
-                <span className="text-blue-500">✓</span>
+                <span className="text-[#1e3a5f]">✓</span>
                 Unlimited time to practice
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-blue-500">✓</span>
+                <span className="text-[#1e3a5f]">✓</span>
                 Save and review sessions
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-blue-500">✓</span>
+                <span className="text-[#1e3a5f]">✓</span>
                 Add personal notes
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-blue-500">✓</span>
+                <span className="text-[#1e3a5f]">✓</span>
                 Pin important questions
               </li>
             </ul>
@@ -59,9 +59,9 @@ const StudentDashboard = () => {
           {/* Assessment Mode Card */}
           <div
             onClick={() => navigate("/assessment")}
-            className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-8 cursor-pointer hover:shadow-2xl transition-all duration-300 border-2 border-orange-200 hover:border-orange-400 group"
+            className="bg-[#1e3a5f]/5 rounded-2xl p-8 cursor-pointer hover:shadow-2xl transition-all duration-300 border-2 border-[#1e3a5f]/20 hover:border-[#1e3a5f] group"
           >
-            <div className="flex items-center justify-center w-16 h-16 bg-orange-500 rounded-full mb-6 group-hover:scale-110 transition-transform">
+            <div className="flex items-center justify-center w-16 h-16 bg-[#1e3a5f] rounded-full mb-6 group-hover:scale-110 transition-transform">
               <LuClipboardList className="text-3xl text-white" />
             </div>
             <h2 className="text-2xl font-bold text-gray-800 mb-3">
@@ -73,19 +73,19 @@ const StudentDashboard = () => {
             </p>
             <ul className="space-y-2 text-sm text-gray-700">
               <li className="flex items-center gap-2">
-                <span className="text-orange-500">✓</span>
+                <span className="text-[#1e3a5f]">✓</span>
                 5-10 minute timed interview
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-orange-500">✓</span>
+                <span className="text-[#1e3a5f]">✓</span>
                 AI-conducted with follow-ups
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-orange-500">✓</span>
+                <span className="text-[#1e3a5f]">✓</span>
                 Instant scoring & evaluation
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-orange-500">✓</span>
+                <span className="text-[#1e3a5f]">✓</span>
                 Detailed performance report
               </li>
             </ul>
@@ -94,9 +94,9 @@ const StudentDashboard = () => {
           {/* Roadmap Generator Card */}
           <div
             onClick={() => navigate("/roadmap")}
-            className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-8 cursor-pointer hover:shadow-2xl transition-all duration-300 border-2 border-purple-200 hover:border-purple-400 group"
+            className="bg-[#1e3a5f]/5 rounded-2xl p-8 cursor-pointer hover:shadow-2xl transition-all duration-300 border-2 border-[#1e3a5f]/20 hover:border-[#1e3a5f] group"
           >
-            <div className="flex items-center justify-center w-16 h-16 bg-purple-500 rounded-full mb-6 group-hover:scale-110 transition-transform">
+            <div className="flex items-center justify-center w-16 h-16 bg-[#1e3a5f] rounded-full mb-6 group-hover:scale-110 transition-transform">
               <LuMap className="text-3xl text-white" />
             </div>
             <h2 className="text-2xl font-bold text-gray-800 mb-3">
@@ -107,19 +107,19 @@ const StudentDashboard = () => {
             </p>
             <ul className="space-y-2 text-sm text-gray-700">
               <li className="flex items-center gap-2">
-                <span className="text-purple-500">✓</span>
+                <span className="text-[#1e3a5f]">✓</span>
                 AI-powered roadmap
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-purple-500">✓</span>
+                <span className="text-[#1e3a5f]">✓</span>
                 Customized to your role
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-purple-500">✓</span>
+                <span className="text-[#1e3a5f]">✓</span>
                 Based on syllabus & experience
               </li>
               <li className="flex items-center gap-2">
-                <span className="text-purple-500">✓</span>
+                <span className="text-[#1e3a5f]">✓</span>
                 Download as PDF
               </li>
             </ul>

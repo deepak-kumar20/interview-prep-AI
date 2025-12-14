@@ -3,6 +3,7 @@ import DashboardLayout from "../../components/Layouts/DashboardLayout";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
+import { getAvatarUrl } from "../../utils/constants";
 import moment from "moment";
 import {
   LuUser,
@@ -75,7 +76,7 @@ const StudentsPage = () => {
               placeholder="Search by name or email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
             />
           </div>
         </div>
@@ -99,21 +100,18 @@ const StudentsPage = () => {
               <div
                 key={student._id}
                 onClick={() => navigate(`/teacher/student/${student._id}`)}
-                className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-200 hover:border-indigo-300 overflow-hidden group"
+                className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-200 hover:border-[#1e3a5f]/30 overflow-hidden group"
               >
                 {/* Card Header with Gradient */}
-                <div className="h-24 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+                <div className="h-24 bg-[#1e3a5f]"></div>
 
                 {/* Profile Picture */}
                 <div className="px-6 pb-6">
                   <div className="relative -mt-12 mb-4">
                     <img
-                      src={
-                        student.profileImageUrl ||
-                        "https://via.placeholder.com/100"
-                      }
+                      src={getAvatarUrl(student.profileImageUrl, student.name)}
                       alt={student.name}
-                      className="w-24 h-24 rounded-full border-4 border-white shadow-lg object-cover bg-gradient-to-br from-indigo-400 to-purple-400 mx-auto"
+                      className="w-24 h-24 rounded-full border-4 border-white shadow-lg object-cover bg-[#1e3a5f] mx-auto"
                     />
                   </div>
 
@@ -132,7 +130,7 @@ const StudentsPage = () => {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                       <span className="text-sm text-gray-600 flex items-center gap-2">
-                        <LuTrendingUp className="text-indigo-600" />
+                        <LuTrendingUp className="text-[#1e3a5f]" />
                         Assessments
                       </span>
                       <span className="font-semibold text-gray-800">
@@ -156,7 +154,7 @@ const StudentsPage = () => {
                     {student.lastAssessment && (
                       <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <span className="text-sm text-gray-600 flex items-center gap-2">
-                          <LuCalendar className="text-indigo-600" />
+                          <LuCalendar className="text-[#1e3a5f]" />
                           Last Active
                         </span>
                         <span className="text-xs text-gray-500">
@@ -167,7 +165,7 @@ const StudentsPage = () => {
                   </div>
 
                   {/* View Details Button */}
-                  <button className="w-full mt-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-2 rounded-lg font-semibold group-hover:from-indigo-700 group-hover:to-purple-700 transition-all duration-300">
+                  <button className="w-full mt-4 bg-[#1e3a5f] text-white py-2 rounded-lg font-semibold hover:bg-[#152d4a] transition-all duration-300">
                     View Details
                   </button>
                 </div>

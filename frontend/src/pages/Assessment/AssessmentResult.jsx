@@ -83,14 +83,14 @@ const AssessmentResult = () => {
         </button>
 
         {/* Overall Score Card */}
-        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg shadow-lg p-8 mb-6 text-white">
+        <div className="bg-[#1e3a5f] rounded-lg shadow-lg p-8 mb-6 text-white">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold mb-2">{assessment.role}</h1>
-              <p className="text-orange-100">
+              <p className="text-white/80">
                 {assessment.experience} Level Assessment
               </p>
-              <p className="text-sm text-orange-100 mt-2">
+              <p className="text-sm text-white/80 mt-2">
                 Completed on{" "}
                 {moment(assessment.completedAt).format(
                   "MMM DD, YYYY · hh:mm A"
@@ -161,7 +161,7 @@ const AssessmentResult = () => {
             </div>
             <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
               <div
-                className="bg-purple-500 h-2 rounded-full"
+                className="bg-[#1e3a5f] h-2 rounded-full"
                 style={{ width: `${evaluation.problemSolvingScore}%` }}
               />
             </div>
@@ -227,7 +227,7 @@ const AssessmentResult = () => {
           <ul className="space-y-3">
             {evaluation.recommendations.map((recommendation, index) => (
               <li key={index} className="flex items-start gap-3 text-gray-700">
-                <span className="text-orange-500 font-bold">{index + 1}.</span>
+                <span className="text-[#1e3a5f] font-bold">{index + 1}.</span>
                 <span>{recommendation}</span>
               </li>
             ))}
@@ -277,7 +277,7 @@ const AssessmentResult = () => {
         <div className="flex gap-4 mt-6">
           <button
             onClick={() => navigate("/assessment/start")}
-            className="flex-1 bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600"
+            className="flex-1 bg-[#1e3a5f] text-white px-6 py-3 rounded-lg hover:bg-[#152d4a]"
           >
             Take Another Assessment
           </button>

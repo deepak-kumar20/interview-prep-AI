@@ -4,6 +4,7 @@ import DashboardLayout from "../../components/Layouts/DashboardLayout";
 import { LuArrowLeft, LuSave } from "react-icons/lu";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
+import { getAvatarUrl } from "../../utils/constants";
 import moment from "moment";
 import toast from "react-hot-toast";
 
@@ -92,17 +93,11 @@ const AssessmentDetail = () => {
         {/* Student & Assessment Info */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <div className="flex items-center gap-4 mb-4">
-            {student?.profileImageUrl ? (
-              <img
-                className="h-16 w-16 rounded-full"
-                src={student.profileImageUrl}
-                alt=""
-              />
-            ) : (
-              <div className="h-16 w-16 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-2xl font-semibold">
-                {student?.name?.charAt(0)}
-              </div>
-            )}
+            <img
+              className="h-16 w-16 rounded-full bg-[#1e3a5f]"
+              src={getAvatarUrl(student?.profileImageUrl, student?.name)}
+              alt=""
+            />
             <div>
               <h1 className="text-2xl font-bold text-gray-800">
                 {student?.name}
@@ -139,7 +134,7 @@ const AssessmentDetail = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-white rounded-lg shadow-md p-4">
             <p className="text-sm text-gray-600">Overall</p>
-            <p className="text-3xl font-bold text-orange-600">
+            <p className="text-3xl font-bold text-[#1e3a5f]">
               {evaluation?.overallScore || 0}
             </p>
           </div>
@@ -157,7 +152,7 @@ const AssessmentDetail = () => {
           </div>
           <div className="bg-white rounded-lg shadow-md p-4">
             <p className="text-sm text-gray-600">Problem Solving</p>
-            <p className="text-3xl font-bold text-purple-600">
+            <p className="text-3xl font-bold text-gray-700">
               {evaluation?.problemSolvingScore || 0}
             </p>
           </div>
@@ -170,7 +165,7 @@ const AssessmentDetail = () => {
           </h2>
           <div className="space-y-6">
             {assessment.questions.map((q, index) => (
-              <div key={q._id} className="border-l-4 border-orange-500 pl-4">
+              <div key={q._id} className="border-l-4 border-[#1e3a5f] pl-4">
                 <h3 className="font-semibold text-gray-800 mb-2">
                   Q{index + 1}: {q.questionText}
                 </h3>
@@ -205,7 +200,7 @@ const AssessmentDetail = () => {
               value={teacherNotes}
               onChange={(e) => setTeacherNotes(e.target.value)}
               placeholder="Add your comments and feedback..."
-              className="w-full h-32 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+              className="w-full h-32 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f]"
             />
           </div>
 
@@ -220,7 +215,7 @@ const AssessmentDetail = () => {
                 max="100"
                 value={teacherRating}
                 onChange={(e) => setTeacherRating(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f]"
               />
             </div>
             <div>
@@ -230,7 +225,7 @@ const AssessmentDetail = () => {
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f]"
               >
                 <option value="pending_review">Pending Review</option>
                 <option value="reviewed">Reviewed</option>
@@ -243,7 +238,7 @@ const AssessmentDetail = () => {
           <button
             onClick={handleSaveReview}
             disabled={saving}
-            className="flex items-center gap-2 bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 disabled:opacity-50"
+            className="flex items-center gap-2 bg-[#1e3a5f] text-white px-6 py-2 rounded-lg hover:bg-[#152d4a] disabled:opacity-50"
           >
             <LuSave />
             {saving ? "Saving..." : "Save Review"}

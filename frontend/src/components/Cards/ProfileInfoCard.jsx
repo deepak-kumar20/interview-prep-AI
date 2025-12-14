@@ -2,6 +2,7 @@ import React, { useContext, useState, useRef, useEffect } from "react";
 import { UserContext } from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
 import { LuLogOut, LuUser, LuChevronDown } from "react-icons/lu";
+import { getAvatarUrl } from "../../utils/constants";
 
 const ProfileInfoCard = () => {
   const { user, clearUser } = useContext(UserContext);
@@ -33,12 +34,12 @@ const ProfileInfoCard = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        className="flex items-center gap-3 px-3 py-2 rounded-full bg-white/80 backdrop-blur-md border border-gray-200 hover:border-indigo-300 hover:shadow-md transition-all duration-300 group"
+        className="flex items-center gap-3 px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 hover:border-[#1e3a5f] hover:bg-gray-100 transition-all duration-200"
       >
         <img
-          src={user.profileImageUrl}
+          src={getAvatarUrl(user.profileImageUrl, user.name)}
           alt={user.name}
-          className="w-9 h-9 bg-gradient-to-br from-indigo-400 to-purple-400 rounded-full object-cover ring-2 ring-white"
+          className="w-9 h-9 bg-[#1e3a5f] rounded-full object-cover"
         />
         <div className="hidden md:block text-left">
           <div className="text-gray-800 text-sm font-semibold leading-tight">
@@ -57,7 +58,7 @@ const ProfileInfoCard = () => {
 
       {/* Dropdown Menu */}
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-56 bg-white/90 backdrop-blur-md rounded-xl shadow-lg border border-gray-200 py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
           <div className="px-4 py-3 border-b border-gray-200">
             <p className="text-sm font-semibold text-gray-800">{user.name}</p>
             <p className="text-xs text-gray-500 truncate">{user.email}</p>
@@ -68,10 +69,21 @@ const ProfileInfoCard = () => {
               setIsDropdownOpen(false);
               navigate("/profile");
             }}
-            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-indigo-50 transition-colors duration-200"
+            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
           >
             <LuUser className="text-lg" />
             <span>View Profile</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setIsDropdownOpen(false);
+              navigate("/dashboard");
+            }}
+            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
+          >
+            <LuUser className="text-lg" />
+            <span>Dashboard</span>
           </button>
 
           <button

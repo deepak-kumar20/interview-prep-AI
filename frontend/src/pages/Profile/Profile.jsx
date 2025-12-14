@@ -5,6 +5,7 @@ import ProfilePhotoSelector from "../../components/Inputs/ProfilePhotoSelector";
 import uploadImage from "../../utils/uploadImage";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPath";
+import { getAvatarUrl } from "../../utils/constants";
 import toast from "react-hot-toast";
 import { LuUser, LuMail, LuShield, LuCamera } from "react-icons/lu";
 
@@ -86,7 +87,7 @@ const Profile = () => {
         {/* Profile Card */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
           {/* Banner */}
-          <div className="h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+          <div className="h-32 bg-[#1e3a5f]"></div>
 
           {/* Profile Content */}
           <div className="px-8 pb-8">
@@ -105,11 +106,9 @@ const Profile = () => {
               ) : (
                 <div className="relative inline-block">
                   <img
-                    src={
-                      user.profileImageUrl || "https://via.placeholder.com/150"
-                    }
+                    src={getAvatarUrl(user.profileImageUrl, user.name)}
                     alt={user.name}
-                    className="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover bg-gradient-to-br from-indigo-400 to-purple-400"
+                    className="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover bg-[#1e3a5f]"
                   />
                   <button
                     onClick={() => setIsEditing(true)}
@@ -126,7 +125,7 @@ const Profile = () => {
               {/* Name */}
               <div>
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                  <LuUser className="text-indigo-600" />
+                  <LuUser className="text-[#1e3a5f]" />
                   Name
                 </label>
                 {isEditing ? (
@@ -134,7 +133,7 @@ const Profile = () => {
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
                     placeholder="Enter your name"
                   />
                 ) : (
@@ -147,7 +146,7 @@ const Profile = () => {
               {/* Email */}
               <div>
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                  <LuMail className="text-indigo-600" />
+                  <LuMail className="text-[#1e3a5f]" />
                   Email
                 </label>
                 <p className="text-lg text-gray-800 px-4 py-3 bg-gray-50 rounded-lg">
@@ -161,11 +160,11 @@ const Profile = () => {
               {/* Role */}
               <div>
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                  <LuShield className="text-indigo-600" />
+                  <LuShield className="text-[#1e3a5f]" />
                   Role
                 </label>
-                <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-indigo-100 to-purple-100 border border-indigo-200 rounded-full">
-                  <span className="text-sm font-semibold text-indigo-700 uppercase">
+                <div className="inline-flex items-center px-4 py-2 bg-[#1e3a5f]/10 border border-[#1e3a5f]/20 rounded-full">
+                  <span className="text-sm font-semibold text-[#1e3a5f] uppercase">
                     {user.role}
                   </span>
                 </div>
@@ -177,7 +176,7 @@ const Profile = () => {
                   <button
                     onClick={handleUpdateProfile}
                     disabled={loading}
-                    className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
+                    className="flex-1 bg-[#1e3a5f] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#152d4a] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
                   >
                     {loading ? "Saving..." : "Save Changes"}
                   </button>
@@ -192,7 +191,7 @@ const Profile = () => {
               ) : (
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md"
+                  className="w-full bg-[#1e3a5f] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#152d4a] transition-all duration-300 shadow-md"
                 >
                   Edit Profile
                 </button>

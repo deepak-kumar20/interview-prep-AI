@@ -152,10 +152,10 @@ const AssignedAssessments = () => {
         </div>
 
         {/* Access Code Entry Section */}
-        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl shadow-md p-6 mb-8 border border-indigo-200">
+        <div className="bg-[#1e3a5f]/5 rounded-xl shadow-md p-6 mb-8 border border-[#1e3a5f]/20">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-3 bg-white rounded-lg shadow-sm">
-              <LuKey className="text-2xl text-indigo-600" />
+              <LuKey className="text-2xl text-[#1e3a5f]" />
             </div>
             <div>
               <h2 className="text-xl font-bold text-gray-800">
@@ -175,13 +175,13 @@ const AssignedAssessments = () => {
                 onChange={(e) => setAccessCode(e.target.value.toUpperCase())}
                 placeholder="Enter access code (e.g., A3X9F2)"
                 maxLength={6}
-                className="w-full px-4 py-3 rounded-lg border border-indigo-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-lg font-mono tracking-wider uppercase placeholder:normal-case placeholder:tracking-normal"
+                className="w-full px-4 py-3 rounded-lg border border-[#1e3a5f]/30 focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent text-lg font-mono tracking-wider uppercase placeholder:normal-case placeholder:tracking-normal"
               />
             </div>
             <button
               type="submit"
               disabled={joiningWithCode || accessCode.length !== 6}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-md"
+              className="bg-[#1e3a5f] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#152d4a] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-md"
             >
               {joiningWithCode ? (
                 <>
@@ -210,7 +210,7 @@ const AssignedAssessments = () => {
             </p>
             <button
               onClick={() => navigate("/assessment")}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300"
+              className="inline-flex items-center gap-2 bg-[#1e3a5f] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#152d4a] transition-all duration-300"
             >
               Try Practice Mode Instead
             </button>
@@ -223,7 +223,7 @@ const AssignedAssessments = () => {
                 className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 overflow-hidden"
               >
                 {/* Card Header */}
-                <div className="h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 relative p-6">
+                <div className="h-32 bg-[#1e3a5f] relative p-6">
                   <div className="absolute top-4 right-4">
                     {getStatusBadge(assessment.status)}
                   </div>
@@ -243,7 +243,7 @@ const AssignedAssessments = () => {
                   {/* Details */}
                   <div className="space-y-3">
                     <div className="flex items-center gap-2 text-sm text-gray-700">
-                      <LuBriefcase className="text-indigo-600" />
+                      <LuBriefcase className="text-[#1e3a5f]" />
                       <span className="font-medium">{assessment.role}</span>
                       <span className="text-gray-400">•</span>
                       <span className="text-gray-600">
@@ -252,7 +252,7 @@ const AssignedAssessments = () => {
                     </div>
 
                     <div className="flex items-center gap-2 text-sm text-gray-700">
-                      <LuClock className="text-indigo-600" />
+                      <LuClock className="text-[#1e3a5f]" />
                       <span>{assessment.duration / 60} minutes</span>
                       <span className="text-gray-400">•</span>
                       <span>{assessment.questionCount} questions</span>
@@ -260,7 +260,7 @@ const AssignedAssessments = () => {
 
                     {assessment.scheduledAt && (
                       <div className="flex items-center gap-2 text-sm text-gray-700">
-                        <LuCalendar className="text-indigo-600" />
+                        <LuCalendar className="text-[#1e3a5f]" />
                         <span>
                           Due:{" "}
                           {moment(assessment.scheduledAt).format(
@@ -304,7 +304,7 @@ const AssignedAssessments = () => {
                   ) : (
                     <button
                       onClick={() => handleStartAssessment(assessment._id)}
-                      className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center gap-2 shadow-md"
+                      className="w-full bg-[#1e3a5f] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#152d4a] transition-all duration-300 flex items-center justify-center gap-2 shadow-md"
                     >
                       <LuPlayCircle />
                       Start Assessment

@@ -23,7 +23,7 @@ const interviewAssessmentSchema = new mongoose.Schema(
     },
     topicsToFocus: {
       type: String,
-      required: true,
+      default: "",
     },
     status: {
       type: String,
