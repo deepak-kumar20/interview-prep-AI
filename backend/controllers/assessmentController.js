@@ -269,7 +269,10 @@ const completeAssessment = async (req, res) => {
       .replace(/```/g, "")
       .trim();
 
+    console.log("AI Evaluation Response:", cleanedText);
+
     const evaluationData = JSON.parse(cleanedText);
+    console.log("Parsed Evaluation Data:", evaluationData);
 
     // Score individual questions
     for (let i = 0; i < assessment.questions.length; i++) {
@@ -281,13 +284,21 @@ const completeAssessment = async (req, res) => {
       await question.save();
     }
 
+    // Ensure scores are numbers and within valid range (0-100)
+    const overallScore = Math.min(100, Math.max(0, Number(evaluationData.overallScore) || 0));
+    const technicalScore = Math.min(100, Math.max(0, Number(evaluationData.technicalScore) || 0));
+    const communicationScore = Math.min(100, Math.max(0, Number(evaluationData.communicationScore) || 0));
+    const problemSolvingScore = Math.min(100, Math.max(0, Number(evaluationData.problemSolvingScore) || 0));
+
+    console.log("Calculated Scores:", { overallScore, technicalScore, communicationScore, problemSolvingScore });
+
     // Create evaluation document
     const evaluation = await Evaluation.create({
       assessment: assessment._id,
-      overallScore: evaluationData.overallScore || 0,
-      technicalScore: evaluationData.technicalScore || 0,
-      communicationScore: evaluationData.communicationScore || 0,
-      problemSolvingScore: evaluationData.problemSolvingScore || 0,
+      overallScore,
+      technicalScore,
+      communicationScore,
+      problemSolvingScore,
       strengths: evaluationData.strengths || [],
       weaknesses: evaluationData.weaknesses || [],
       recommendations: evaluationData.recommendations || [],
