@@ -9,13 +9,40 @@ exports.createSession = async (req, res) => {
     const { role, experience, topicsToFocus, description, questions } =
       req.body;
 
+    if (
+      !role ||
+      !experience ||
+      !topicsToFocus ||
+      !Array.isArray(questions) ||
+      questions.length === 0
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Role, experience, topics, and questions are required",
+      });
+    }
+
+    const normalizedRole = String(role).trim();
+    const normalizedTopics = String(topicsToFocus).trim();
+    if (
+      !normalizedRole ||
+      !normalizedTopics ||
+      normalizedRole.toLowerCase() === "undefined" ||
+      normalizedTopics.toLowerCase() === "undefined"
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Role and topics must contain valid values",
+      });
+    }
+
     const userId = req.user._id; //assuming you have the middleware setting req.user
 
     const session = await Session.create({
       user: userId,
-      role,
+      role: normalizedRole,
       experience,
-      topicsToFocus,
+      topicsToFocus: normalizedTopics,
       description,
     });
 

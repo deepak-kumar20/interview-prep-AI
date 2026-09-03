@@ -12,6 +12,17 @@ const SummaryCard = ({
   onSelect,
   onDelete,
 }) => {
+  const safeRole =
+    typeof role === "string" && role.trim() && role.toLowerCase() !== "undefined"
+      ? role.trim()
+      : "Interview Practice";
+  const safeTopics =
+    typeof topicsToFocus === "string" &&
+    topicsToFocus.trim() &&
+    topicsToFocus.toLowerCase() !== "undefined"
+      ? topicsToFocus.trim()
+      : "General interview preparation";
+
   return (
     <div
       className="bg-white border border-gray-300/40 rounded-xl p-2 overflow-hidden cursor-pointer hover:shadow-xl shadow-gray-100 relative group"
@@ -25,7 +36,7 @@ const SummaryCard = ({
       >
         <div className="flex items-start">
           <div className="flex-shrink-0 w-12 h-12 bg-white rounded flex items-center justify-center mr-4">
-            <span className="text-lg font-semibold text-black">{getInitials(role)}</span>
+            <span className="text-lg font-semibold text-black">{getInitials(safeRole)}</span>
           </div>
         
 
@@ -34,9 +45,9 @@ const SummaryCard = ({
           <div className="flex justify-between items-start">
             {/* Title and Skills */}
             <div>
-              <h2 className="text-[17px] font-medium">{role}</h2>
+              <h2 className="text-[17px] font-medium">{safeRole}</h2>
               <p className="text-xs text-medium text-gray-900">
-                {topicsToFocus}
+                {safeTopics}
               </p>
             </div>
           </div>

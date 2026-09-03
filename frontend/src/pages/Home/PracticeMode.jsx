@@ -71,7 +71,7 @@ const PracticeMode = () => {
               role={data?.role || ""}
               topicsToFocus={data?.topicsToFocus || ""}
               experience={data?.experience || ""}
-              questions={data?.question?.length || ""}
+              questions={data?.questions?.length || 0}
               description={data?.description || ""}
               lastUpdated={
                 data?.updatedAt
